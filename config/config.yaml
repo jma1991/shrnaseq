@@ -1,0 +1,8 @@
+# path to sample file
+samples: config/Samples2.txt
+
+# path to hairpin file
+hairpins: config/Hairpins2.txt
+
+# path to fastq file
+fastq: config/screen2.fastq

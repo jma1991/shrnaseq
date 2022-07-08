@@ -1,0 +1,11 @@
+# Configuration file
+configfile: "config/config.yaml"
+
+# Workflow rules
+include: "rules/outputs.smk"
+include: "rules/edgeR.smk"
+
+# Target rule
+rule all:
+    input:
+        get_final_output()
