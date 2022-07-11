@@ -31,11 +31,21 @@ rule MDS_plot:
     script:
         "../scripts/MDS_plot.R"   
 
-rule diff_rep_analysis:
+rule model_matrix:
     input:
         rds="results/filter_hairpins.rds"
     output:
-        Rdata="results/diff_rep_analysis.Rdata"
+        rds="results/model_matrix.rds"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/model_matrix.R"
+
+rule diff_rep_analysis:
+    input:
+        rds=["results/filter_hairpins.rds", "results/model_matrix.rds"]
+    output:
+        rds="results/diff_rep_analysis.rds"
     conda:
         "../envs/edger.yaml"
     script:
@@ -43,7 +53,7 @@ rule diff_rep_analysis:
 
 rule BVC_plot:
     input:
-        Rdata="results/diff_rep_analysis.Rdata"
+        rds="results/diff_rep_analysis.rds"
     output:
         plot="plots/BCV-plot.png"
     conda:
@@ -53,7 +63,7 @@ rule BVC_plot:
     
 rule glmFit:
     input:
-        Rdata="results/diff_rep_analysis.Rdata"
+        rds=["results/model_matrix.rds","results/diff_rep_analysis.rds"]
     output:
         rds="results/glmFit.rds"
     conda:

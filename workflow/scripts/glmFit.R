@@ -1,6 +1,8 @@
 analysis=function(input, output) {
     library(edgeR)
-    load(input$Rdata)
+    des=readRDS(input$rds[1])
+    xglm=readRDS(input$rds[2])
+
     fit = glmFit(xglm, des)
     saveRDS(fit,file=output$rds)
 }
