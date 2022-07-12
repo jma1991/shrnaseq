@@ -49,6 +49,18 @@ rule model_matrix:
     script:
         "../scripts/model_matrix.R"
 
+rule contrasts_matrix:
+    input:
+        rds="results/model_matrix.rds"
+    output:
+        rds="results/contrasts_matrix.rds"
+    message:
+        "Generate matrix for group contrasts"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/contrasts_matrix.R"
+
 rule diff_rep_analysis:
     input:
         rds=["results/filter_hairpins.rds", "results/model_matrix.rds"]
@@ -112,9 +124,11 @@ rule glmFit:
 
 rule glmLRT:
     input:
-        rds="results/glmFit.rds"
+        rds=["results/contrasts_matrix.rds", "results/glmFit.rds"]
     output:
         rds="results/glmLRT.rds"
+    params:
+        contrast=config["contrast"]
     message:
         "Perform likelihood ratio test on GLM"
     conda:
@@ -127,6 +141,8 @@ rule expression_heatmap:
         rds=["results/filter_hairpins.rds","results/glmLRT.rds"]
     output:
         plot="plots/expression-heatmap.png"
+    params:
+        FC=config["FC"]
     message:
         "Visualise differential expression across groups"
     conda:
@@ -176,6 +192,8 @@ rule FDR_hairpins:
     output:
         txt="results/FDR-sig-hairpins.txt",
         rds="results/FDR_hairpins.rds"
+    params:
+        threshold=config["FDR"]
     message:
         "Highlight and generate table of hairpins with FDR < 0.05"
     conda:

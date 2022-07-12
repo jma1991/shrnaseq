@@ -1,3 +1,6 @@
+# specify organism
+organism: Mus musculus
+
 # path to sample file
 samples: config/Samples2.txt
 
@@ -6,3 +9,12 @@ hairpins: config/Hairpins2.txt
 
 # path to fastq file
 fastq: config/screen2.fastq
+
+# specify contrasts i.e., A vs B would be A-B
+contrast: Day5GFPpos-Day5GFPneg
+
+# specify FDR threshold
+FDR: 0.05
+
+# specifiy fold change threshold
+FC: 1.5

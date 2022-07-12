@@ -1,4 +1,4 @@
-analysis=function(input, output) {
+analysis=function(input, output, params) {
     library(RColorBrewer)
     library(pheatmap)
     library(edgeR)
@@ -8,16 +8,16 @@ analysis=function(input, output) {
     y <- cpm(x$counts, log=TRUE, prior.count = 1)
   
     colnames(y) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
-    selY <- rownames(top2$table)[abs(top2$table$logFC)>1.5]
+    selY <- rownames(top2$table)[abs(top2$table$logFC)>params$FC]
     y = subset(y, rownames(y) %in% selY)
 
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
     plt=pheatmap(t(y), col = colors, main="Differential expression across the groups (logCPM)",
          )
 
-    png(output$plot, width=2000, height=2000, res=400)
+    png(output$plot, width=2500, height=2000, res=400)
     print(plt)
     dev.off()
 }
   
-analysis(snakemake@input, snakemake@output)
+analysis(snakemake@input, snakemake@output, snakemake@params)
