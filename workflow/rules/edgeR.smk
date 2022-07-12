@@ -35,7 +35,7 @@ rule MDS_plot:
     conda:
         "../envs/edger.yaml"
     script:
-        "../scripts/MDS_plot.R"   
+        "../scripts/MDS_plot.R"
 
 rule model_matrix:
     input:
@@ -72,6 +72,31 @@ rule BVC_plot:
         "../envs/edger.yaml"
     script:
         "../scripts/BVC_plot.R" 
+
+rule PCA_plot:
+    input:
+        rds="results/filter_hairpins.rds"
+    output:
+        plot="plots/PCA-plot.png"
+    message:
+        "Visualise relationships between first 2 principal components"
+    conda:
+        "../envs/pca.yaml"
+    script:
+        "../scripts/PCA_plot.R"
+    
+
+rule sample_dist_heatmap:
+    input:
+        rds="results/filter_hairpins.rds"
+    output:
+        plot="plots/sample-dist-heatmap.png"
+    message:
+        "Heatmap of sample distances"
+    conda:
+        "../envs/heatmap.yaml"
+    script:
+        "../scripts/sample_dist_heatmap.R"
     
 rule glmFit:
     input:
@@ -96,6 +121,42 @@ rule glmLRT:
         "../envs/edger.yaml"
     script:
         "../scripts/glmLRT.R" 
+
+rule expression_heatmap:
+    input:
+        rds=["results/filter_hairpins.rds","results/glmLRT.rds"]
+    output:
+        plot="plots/expression-heatmap.png"
+    message:
+        "Visualise differential expression across groups"
+    conda:
+        "../envs/heatmap.yaml"
+    script:
+        "../scripts/expression_heatmap.R"
+
+rule volcano_plot:
+    input:
+        rds="results/glmLRT.rds"
+    output:
+        plot="plots/volcano-plot.png"
+    message:
+        "Generate volcano plot to visualise relationship between magnitude and strength of evidence"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/volcano_plot.R"
+    
+rule hairpin_histogram:
+    input:
+        rds="results/glmLRT.rds"
+    output:
+        plot="plots/hairpin-histogram-plot.png"
+    message:
+        "Visualise distribution of hairpin p values"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/hairpin_histogram.R"
 
 rule top_hairpins:
     input:

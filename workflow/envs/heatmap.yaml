@@ -1,7 +1,11 @@
 channels:
   - bioconda
   - conda-forge
+  - r
 dependencies:
   - bioconductor-edger
   - bioconductor-deseq2
   - bioconductor-deformats
+  - bioconductor-mixomics
+  - r-pheatmap
+  - r-rcolorbrewer
