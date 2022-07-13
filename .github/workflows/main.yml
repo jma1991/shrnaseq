@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Checkout submodules
-      uses: textbook/git-checkout-submodule-action@2.1.0
     - name: Formatting
       uses: github/super-linter@v4.9.4
       env:
