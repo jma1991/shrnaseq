@@ -2,8 +2,7 @@ name: Tests
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
     branches_ignore: []
 
