@@ -10,7 +10,6 @@ analysis=function(input, output, params) {
     colnames(y) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
     selY <- rownames(top2$table)[abs(top2$table$logFC)>params$FC]
     y = subset(y, rownames(y) %in% selY)
-
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
     plt=pheatmap(t(y), col = colors, main="Differential expression across the groups (logCPM)",
          )

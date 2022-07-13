@@ -4,7 +4,7 @@ analysis=function(input, output, params) {
     thresh = params$threshold
     top2 = topTags(lrt, n=Inf)
     top2ids = top2$table[top2$table$FDR<thresh,1]
-    write.table(top2ids, output$txt, row.names=F, quote=F, col.names=F)
+    write.table(top2ids, output$tsv, row.names=F, quote=F, col.names=F)
     saveRDS(top2ids, file=output$rds)
 }
 

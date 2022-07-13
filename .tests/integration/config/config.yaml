@@ -10,8 +10,16 @@ hairpins: config/Hairpins2.txt
 # path to fastq file
 fastq: config/subset.fastq
 
-# specify contrasts i.e., A vs B would be A-B
-contrast: Day5GFPpos-Day5GFPneg
+# specify contrasts
+contrast:
+  Day2_vs_Day5GFPpos:
+    - Day2-Day5GFPpos
+  Day2_vs_Day5GRPneg:
+    - Day2-Day5GFPneg
+  Day2_vs_Day10:
+    - Day2-Day10
+  Day5GFPpos_vs_Day5GRPneg:
+    - Day5GFPpos-Day5GFPneg
 
 # specify FDR threshold
 FDR: 0.05

@@ -126,9 +126,9 @@ rule glmLRT:
     input:
         rds=["results/contrasts_matrix.rds", "results/glmFit.rds"]
     output:
-        rds="results/glmLRT.rds"
+        rds="results/{contrast}-glmLRT.rds"
     params:
-        contrast=config["contrast"]
+        contrast=get_contrast
     message:
         "Perform likelihood ratio test on GLM"
     conda:
@@ -138,9 +138,10 @@ rule glmLRT:
 
 rule expression_heatmap:
     input:
-        rds=["results/filter_hairpins.rds","results/glmLRT.rds"]
+        rds=["results/filter_hairpins.rds",
+        "results/{contrast}-glmLRT.rds"]
     output:
-        plot="plots/expression-heatmap.png"
+        plot="plots/{contrast}-expression-heatmap.png"
     params:
         FC=config["FC"]
     message:
@@ -152,9 +153,9 @@ rule expression_heatmap:
 
 rule volcano_plot:
     input:
-        rds="results/glmLRT.rds"
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        plot="plots/volcano-plot.png"
+        plot="plots/{contrast}-volcano-plot.png"
     message:
         "Generate volcano plot to visualise relationship between magnitude and strength of evidence"
     conda:
@@ -164,9 +165,9 @@ rule volcano_plot:
     
 rule hairpin_histogram:
     input:
-        rds="results/glmLRT.rds"
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        plot="plots/hairpin-histogram-plot.png"
+        plot="plots/{contrast}-hairpin-histogram.png"
     message:
         "Visualise distribution of hairpin p values"
     conda:
@@ -176,9 +177,9 @@ rule hairpin_histogram:
 
 rule top_hairpins:
     input:
-        rds="results/glmLRT.rds"
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        txt="results/top-ranked-hairpins.txt"
+        tsv="results/{contrast}-top-ranked-hairpins.tsv"
     message:
         "Generate table of the top differentially expressed hairpins"
     conda:
@@ -188,10 +189,10 @@ rule top_hairpins:
 
 rule FDR_hairpins:
     input:
-        rds="results/glmLRT.rds"
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        txt="results/FDR-sig-hairpins.txt",
-        rds="results/FDR_hairpins.rds"
+        tsv="results/{contrast}-FDR-sig-hairpins.tsv",
+        rds="results/{contrast}-FDR_hairpins.rds"
     params:
         threshold=config["FDR"]
     message:
@@ -203,9 +204,10 @@ rule FDR_hairpins:
 
 rule plotSMEAR:
     input:
-        rds=["results/glmLRT.rds", "results/FDR_hairpins.rds"]
+        rds=["results/{contrast}-glmLRT.rds",
+            "results/{contrast}-FDR_hairpins.rds"]
     output:
-        plot="plots/plotSmear.png"
+        plot="plots/{contrast}-plotSmear.png"
     message:
         "Visualise logFC against logCPM with top FDR hairpins highlighted"
     conda:
