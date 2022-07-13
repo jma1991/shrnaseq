@@ -1,8 +1,10 @@
+
 name: Tests
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - maaster
   pull_request:
     branches_ignore: []
 
@@ -25,7 +27,7 @@ jobs:
     - name: Linting
       uses: snakemake/snakemake-github-action@v1.22.0
       with:
-        directory: .tests/integration
+        directory: .test/integration
         snakefile: workflow/Snakefile
         args: "--lint"
 
@@ -44,12 +46,16 @@ jobs:
     - name: Test workflow
       uses: snakemake/snakemake-github-action@v1.23.0
       with:
-        directory: .tests/integration
+        directory: .test/integration
         snakefile: workflow/Snakefile
         args: "--use-conda --show-failed-logs --cores 2 --conda-cleanup-pkgs cache --all-temp"
-   -  name: Test report
-      uses: snakemake/snakemake-github-action@v1.22.0
-      with:
-        directory: .tests/integration
-        snakefile: workflow/Snakefile
-        args: "--report report.zip"
+
+    # Disable report testing for now since we mark all output files as temporary above.
+    # TODO: add some kind of test mode to report generation which does not really try to include
+    # results.
+    # - name: Test report
+    #   uses: snakemake/snakemake-github-action@v1.22.0
+    #   with:
+    #     directory: .test
+    #     snakefile: workflow/Snakefile
+    #     args: "--report report.zip"
