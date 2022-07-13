@@ -27,7 +27,7 @@ jobs:
     - name: Linting
       uses: snakemake/snakemake-github-action@v1.22.0
       with:
-        directory: .test/integration
+        directory: .tests/integration
         snakefile: workflow/Snakefile
         args: "--lint"
 
@@ -46,7 +46,7 @@ jobs:
     - name: Test workflow
       uses: snakemake/snakemake-github-action@v1.23.0
       with:
-        directory: .test/integration
+        directory: .tests/integration
         snakefile: workflow/Snakefile
         args: "--use-conda --show-failed-logs --cores 2 --conda-cleanup-pkgs cache --all-temp"
 
