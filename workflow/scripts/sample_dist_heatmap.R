@@ -7,7 +7,7 @@ analysis=function(input, output) {
     library(RColorBrewer)
     x=readRDS(input$rds)
     dds = as.DESeqDataSet(x, design = ~ x$samples$group)
-    vsd <- vst(dds, blind = FALSE,  nsub=nrow(dds))
+    vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
     sampleDists <- dist(t(assay(vsd)))
     sampleDistMatrix <- as.matrix(sampleDists)
     rownames(sampleDistMatrix) <- paste(vsd$group, vsd$Replicate, sep = " - " )
