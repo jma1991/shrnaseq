@@ -5,6 +5,9 @@ rule processAmplicons:
         fastq=config["fastq"]
     output: 
         rds="results/processAmplicons.rds"
+    log:
+        out = "logs/processAmplicons.out",
+        err = "logs/processAmplicons.err"
     message:
         "Process raw read data from genetic sequencing screens"
     conda:
@@ -18,6 +21,9 @@ rule filter_hairpins:
     output:
         rds="results/filter_hairpins.rds",
         plot="plots/counts-index-hairpins.png"
+    log:
+        out = "logs/filter_hairpins.out",
+        err = "logs/filter_hairpins.err"
     message:
         "Filter hairpins with counts of > 0.5 counts per million in at least 3 samples, and plots of counts per index and hairpins"
     conda:
@@ -30,6 +36,9 @@ rule MDS_plot:
         rds="results/filter_hairpins.rds"
     output:
         plot="plots/MDS-plot.png"
+    log:
+        out = "logs/MDS_plot.out",
+        err = "logs/MDS_plot.err"
     message:
         "Multidimensional Scaling plot to visualise relationship between samples"
     conda:
@@ -42,6 +51,9 @@ rule model_matrix:
         rds="results/filter_hairpins.rds"
     output:
         rds="results/model_matrix.rds"
+    log:
+        out = "logs/model_matrix.out",
+        err = "logs/model_matrix.err"
     message:
         "Generate model matrix for edgeR analysis"
     conda:
@@ -54,6 +66,9 @@ rule contrasts_matrix:
         rds="results/model_matrix.rds"
     output:
         rds="results/contrasts_matrix.rds"
+    log:
+        out = "logs/contrasts_matrix.out",
+        err = "logs/contrasts_matrix.err"
     message:
         "Generate matrix for group contrasts"
     conda:
@@ -66,6 +81,9 @@ rule diff_rep_analysis:
         rds=["results/filter_hairpins.rds", "results/model_matrix.rds"]
     output:
         rds="results/diff_rep_analysis.rds"
+    log:
+        out = "logs/diff_rep_analysis.out",
+        err = "logs/diff_rep_analysis.err"
     message: 
         "Perform differential representation analysis"
     conda:
@@ -78,6 +96,9 @@ rule BVC_plot:
         rds="results/diff_rep_analysis.rds"
     output:
         plot="plots/BCV-plot.png"
+    log:
+        out = "logs/BVC_plot.out",
+        err = "logs/BVC_plot.err"    
     message:
         "Visualise Biological Coefficient of Variation against read abundance"
     conda:
@@ -90,6 +111,9 @@ rule PCA_plot:
         rds="results/filter_hairpins.rds"
     output:
         plot="plots/PCA-plot.png"
+    log:
+        out = "logs/PCA_plot.out",
+        err = "logs/PCA_plot.err"   
     message:
         "Visualise relationships between first 2 principal components"
     conda:
@@ -103,6 +127,9 @@ rule sample_dist_heatmap:
         rds="results/filter_hairpins.rds"
     output:
         plot="plots/sample-dist-heatmap.png"
+    log:
+        out = "logs/sample_dist_heatmap.out",
+        err = "logs/sample_dist_heatmap.err"   
     message:
         "Heatmap of sample distances"
     conda:
@@ -115,6 +142,9 @@ rule glmFit:
         rds=["results/model_matrix.rds","results/diff_rep_analysis.rds"]
     output:
         rds="results/glmFit.rds"
+    log:
+        out = "logs/glmFit.out",
+        err = "logs/glmFit.err" 
     message:
         "Fit negative bionomial GLM"
     conda:
@@ -129,6 +159,9 @@ rule glmLRT:
         rds="results/{contrast}-glmLRT.rds"
     params:
         contrast=get_contrast
+    log:
+        out = "logs/{contrast}-glmLRT.out",
+        err = "logs/{contrast}-glmLRT.err" 
     message:
         "Perform likelihood ratio test on GLM"
     conda:
@@ -144,6 +177,9 @@ rule expression_heatmap:
         plot="plots/{contrast}-expression-heatmap.png"
     params:
         FC=config["FC"]
+    log:
+        out = "logs/{contrast}-expression-heatmap.out",
+        err = "logs/{contrast}-expression-heatmap.err" 
     message:
         "Visualise differential expression across groups"
     conda:
@@ -156,6 +192,9 @@ rule volcano_plot:
         rds="results/{contrast}-glmLRT.rds"
     output:
         plot="plots/{contrast}-volcano-plot.png"
+    log:
+        out = "logs/{contrast}-volcano-plot.out",
+        err = "logs/{contrast}-volcano-plot.err"
     message:
         "Generate volcano plot to visualise relationship between magnitude and strength of evidence"
     conda:
@@ -168,6 +207,9 @@ rule hairpin_histogram:
         rds="results/{contrast}-glmLRT.rds"
     output:
         plot="plots/{contrast}-hairpin-histogram.png"
+    log:
+        out = "logs/{contrast}-hairpin-histogram.out",
+        err = "logs/{contrast}-hairpin-histogram.err"
     message:
         "Visualise distribution of hairpin p values"
     conda:
@@ -180,6 +222,9 @@ rule top_hairpins:
         rds="results/{contrast}-glmLRT.rds"
     output:
         tsv="results/{contrast}-top-ranked-hairpins.tsv"
+    log:
+        out = "logs/{contrast}-top-ranked-hairpins.out",
+        err = "logs/{contrast}-top-ranked-hairpins.err"
     message:
         "Generate table of the top differentially expressed hairpins"
     conda:
@@ -195,6 +240,9 @@ rule FDR_hairpins:
         rds="results/{contrast}-FDR_hairpins.rds"
     params:
         threshold=config["FDR"]
+    log:
+        out = "logs/{contrast}-FDR-sig-hairpins.out",
+        err = "logs/{contrast}-FDR-sig-hairpins.err"
     message:
         "Highlight and generate table of hairpins with FDR < 0.05"
     conda:
@@ -208,6 +256,9 @@ rule plotSMEAR:
             "results/{contrast}-FDR_hairpins.rds"]
     output:
         plot="plots/{contrast}-plotSmear.png"
+    log:
+        out = "logs/{contrast}-plotSmear.out",
+        err = "logs/{contrast}-plotSmear.err"
     message:
         "Visualise logFC against logCPM with top FDR hairpins highlighted"
     conda:
