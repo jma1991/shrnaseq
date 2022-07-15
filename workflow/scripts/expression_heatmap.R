@@ -22,8 +22,22 @@ analysis=function(input, output, params, log) {
     y = subset(y, rownames(y) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
 
-    png(output$plot, width=2500, height=2000, res=400)
+    png(output$plot[1], width=2500, height=2000, res=400)
     pheatmap(t(y), col = colors, main="Differential expression across the groups (logCPM)")
+    dev.off()
+
+    #batch corrected
+    corrected_lrt=readRDS(input$rds[3])
+    corrected_top2 = topTags(corrected_lrt, n=Inf)
+    corrected_y <- cpm(x$counts, log=TRUE, prior.count = 1)
+  
+    colnames(corrected_y) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
+    corrected_selY <- rownames(corrected_top2$table)[abs(corrected_top2$table$logFC)>params$FC]
+    corrected_y = subset(corrected_y, rownames(corrected_y) %in% corrected_selY)
+    colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
+
+    png(output$plot[2], width=2500, height=2000, res=400)
+    pheatmap(t(corrected_y), col = colors, main="Differential expression across the groups (logCPM)")
     dev.off()
 }
   

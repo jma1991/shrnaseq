@@ -10,8 +10,10 @@ analysis=function(input, output, log) {
 
     #Script
     library(edgeR)
-    lrt=readRDS(input$rds)
-    write.table(topTags(lrt), output$tsv, row.names=F, quote=F)
+    lrt=readRDS(input$rds[1])
+    write.table(topTags(lrt), output$tsv[1], row.names=F, quote=F)
+    corrected_lrt=readRDS(input$rds[2])
+    write.table(topTags(corrected_lrt), output$tsv[2], row.names=F, quote=F)
 }
 
 analysis(snakemake@input, snakemake@output, snakemake@log)

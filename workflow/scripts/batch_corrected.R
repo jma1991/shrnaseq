@@ -8,13 +8,13 @@ analysis=function(input, output, log) {
 
     sink(err, type = "message")
 
-    #Script
+    #Script 
+    library(limma)
     library(edgeR)
     xglm=readRDS(input$rds)
-    png(output$plot, width=2000, height=2000, res=400)
-        plotBCV(xglm, main="BCV Plot")
-    dev.off()
-
+    xglm$counts=round(exp(removeBatchEffect(log(xglm$counts), 
+                                       batch=factor(xglm$samples$batch), 
+                                       group=factor(xglm$samples$group))))
+    saveRDS(xglm, file=output$rds)
 }
-
 analysis(snakemake@input, snakemake@output, snakemake@log)

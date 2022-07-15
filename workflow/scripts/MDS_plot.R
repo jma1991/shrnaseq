@@ -8,12 +8,18 @@ analysis=function(input, output, log) {
 
     sink(err, type = "message")
 
-    #Script
+    #Script 
     library(edgeR)
-    x=readRDS(input$rds)
-    png(output$plot, width=2000, height=2000, res=400)
+    x=readRDS(input$rds[1])
+    png(output$plot[1], width=2000, height=2000, res=400)
     plotMDS(x, labels=x$samples$group, col=rep(1:4, times=3), main="MDS Plot")
         legend("topright", legend=c(unique(x$samples$group)), col=1:4, pch=15)
+    dev.off()
+
+    corrected=readRDS(input$rds[2])
+    png(output$plot[2], width=2000, height=2000, res=400)
+    plotMDS(corrected, labels=corrected$samples$group, col=rep(1:4, times=3), main="MDS Plot")
+        legend("topright", legend=c(unique(corrected$samples$group)), col=1:4, pch=15)
     dev.off()
 }
 

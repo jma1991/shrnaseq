@@ -2,7 +2,7 @@
 organism: Mus musculus
 
 # path to sample file
-samples: config/Samples2.txt
+samples: config/Samples2.tsv
 
 # path to hairpin file
 hairpins: config/Hairpins2.txt
