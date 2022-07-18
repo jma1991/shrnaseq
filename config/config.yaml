@@ -8,7 +8,7 @@ samples: config/Samples2.tsv
 hairpins: config/Hairpins2.txt
 
 # path to fastq file
-fastq: config/screen2.fastq
+fastq: config/subset.fastq
 
 # specify contrasts
 contrast:

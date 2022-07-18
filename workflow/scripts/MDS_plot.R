@@ -16,10 +16,10 @@ analysis=function(input, output, log) {
         legend("topright", legend=c(unique(x$samples$group)), col=1:4, pch=15)
     dev.off()
 
-    corrected=readRDS(input$rds[2])
+    mat=readRDS(input$rds[2])
     png(output$plot[2], width=2000, height=2000, res=400)
-    plotMDS(corrected, labels=corrected$samples$group, col=rep(1:4, times=3), main="MDS Plot")
-        legend("topright", legend=c(unique(corrected$samples$group)), col=1:4, pch=15)
+    plotMDS(mat, labels=x$samples$group, col=rep(1:4, times=3), main="MDS Plot")
+        legend("topright", legend=c(unique(x$samples$group)), col=1:4, pch=15)
     dev.off()
 }
 

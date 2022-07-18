@@ -17,7 +17,7 @@ analysis=function(input, output, log) {
     library(RColorBrewer)
 
     x=readRDS(input$rds[1])
-    dds = as.DESeqDataSet(x, design = ~ x$samples$group)
+    dds= as.DESeqDataSet(x, design = ~ x$samples$group)
     vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
     sampleDists <- dist(t(assay(vsd)))
     sampleDistMatrix <- as.matrix(sampleDists)
@@ -27,26 +27,24 @@ analysis=function(input, output, log) {
 
     png(output$plot[1], width=2800, height=2000, res=400)
     pheatmap(sampleDistMatrix,
-                clustering_distance_rows = sampleDists,
-                clustering_distance_cols = sampleDists,
-                col = colors)
+            clustering_distance_rows = sampleDists,
+            clustering_distance_cols = sampleDists,
+            col = colors)
     dev.off()
 
     #batch corrected
-    corrected=readRDS(input$rds[2])
-    dds = as.DESeqDataSet(corrected, design = ~ corrected$samples$group)
-    vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
-    sampleDists <- dist(t(assay(vsd)))
+    mat=readRDS(input$rds[2])
+    sampleDists <- dist(t(mat))
     sampleDistMatrix <- as.matrix(sampleDists)
-    rownames(sampleDistMatrix) <- paste(vsd$group, vsd$Replicate, sep = " - " )
+    rownames(sampleDistMatrix) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
     colnames(sampleDistMatrix) <- NULL
     colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 
     png(output$plot[2], width=2800, height=2000, res=400)
     pheatmap(sampleDistMatrix,
-                clustering_distance_rows = sampleDists,
-                clustering_distance_cols = sampleDists,
-                col = colors)
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors)
     dev.off()
 }
   

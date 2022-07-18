@@ -13,12 +13,7 @@ analysis=function(input, output, params, log) {
     matrix=readRDS(input$rds[1])
     fit=readRDS(input$rds[2])
     lrt = glmLRT(fit, contrast=matrix[, params$contrast])
-    saveRDS(lrt,file=output$rds[1])
-
-    #batch corrected
-    corrected_fit=readRDS(input$rds[3])
-    corrected_lrt = glmLRT(corrected_fit, contrast=matrix[, params$contrast])
-    saveRDS(corrected_lrt,file=output$rds[2])
+    saveRDS(lrt,file=output$rds)
 
 }
 

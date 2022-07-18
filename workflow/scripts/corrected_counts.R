@@ -11,10 +11,11 @@ analysis=function(input, output, log) {
     #Script 
     library(limma)
     library(edgeR)
-    xglm=readRDS(input$rds)
-    xglm$counts=round(exp(removeBatchEffect(log(xglm$counts), 
-                                       batch=factor(xglm$samples$batch), 
-                                       group=factor(xglm$samples$group))))
-    saveRDS(xglm, file=output$rds)
+    x=readRDS(input$rds)
+
+    mat=cpm(x$counts, log=TRUE, prior.count = 1)
+    mat=removeBatchEffect(mat, batch=factor(x$samples$batch))
+
+    saveRDS(mat, file=output$rds)
 }
 analysis(snakemake@input, snakemake@output, snakemake@log)

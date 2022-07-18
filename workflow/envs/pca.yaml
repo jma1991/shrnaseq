@@ -1,7 +1,10 @@
 channels:
   - bioconda
   - conda-forge
+  - r
 dependencies:
   - bioconductor-edger
-  - bioconductor-deseq2
   - bioconductor-deformats
+  - bioconductor-deseq2
+  - r-ggplot2
+  - r-matrixstats

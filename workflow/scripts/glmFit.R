@@ -14,13 +14,8 @@ analysis=function(input, output, log) {
     xglm=readRDS(input$rds[2])
 
     fit = glmFit(xglm, des)
-    saveRDS(fit,file=output$rds[1])
+    saveRDS(fit,file=output$rds)
 
-    #batch corrected 
-    corrected=readRDS(input$rds[3])
-
-    corrected_fit = glmFit(corrected, des)
-    saveRDS(corrected_fit,file=output$rds[2])
 }
 
 analysis(snakemake@input, snakemake@output, snakemake@log)

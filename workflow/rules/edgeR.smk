@@ -31,6 +31,21 @@ rule filter_hairpins:
     script:
         "../scripts/filter_hairpins.R"
 
+rule corrected_counts:
+    input:
+        rds="results/diff_rep_analysis.rds"
+    output:
+        rds="results/corrected_counts.rds"
+    log:
+        out = "logs/corrected_counts.out",
+        err = "logs/corrected_counts.err"
+    message: 
+        "Remove batch effect"
+    conda:
+        "../envs/limma.yaml"
+    script:
+        "../scripts/corrected_counts.R" 
+
 rule model_matrix:
     input:
         rds="results/filter_hairpins.rds"
@@ -76,24 +91,9 @@ rule diff_rep_analysis:
     script:
         "../scripts/diff_rep_analysis.R" 
 
-rule batch_corrected:
-    input:
-        rds="results/diff_rep_analysis.rds"
-    output:
-        rds="results/batch_corrected.rds"
-    log:
-        out = "logs/batch_corrected.out",
-        err = "logs/batch_corrected.err"
-    message: 
-        "Remove batch effect"
-    conda:
-        "../envs/limma.yaml"
-    script:
-        "../scripts/batch_corrected.R" 
-
 rule MDS_plot:
     input:
-        rds=["results/filter_hairpins.rds", "results/batch_corrected.rds"]
+        rds=["results/filter_hairpins.rds", "results/corrected_counts.rds"]
     output:
         plot=["plots/MDS-plot.png", "plots/corrected-MDS-plot.png"]
     log:
@@ -108,7 +108,7 @@ rule MDS_plot:
 
 rule PCA_plot:
     input:
-        rds=["results/filter_hairpins.rds", "results/batch_corrected.rds"]
+        rds=["results/filter_hairpins.rds", "results/corrected_counts.rds"]
     output:
         plot=["plots/PCA-plot.png", "plots/corrected-PCA-plot.png"]
     log:
@@ -123,7 +123,7 @@ rule PCA_plot:
 
 rule sample_dist_heatmap:
     input:
-        rds=["results/filter_hairpins.rds",  "results/batch_corrected.rds"]
+        rds=["results/filter_hairpins.rds",  "results/corrected_counts.rds"]
     output:
         plot=["plots/sample-dist-heatmap.png", "plots/corrected-sample-dist-heatmap.png"]
     log:
@@ -153,10 +153,9 @@ rule BVC_plot:
 
 rule glmFit:
     input:
-        rds=["results/model_matrix.rds", "results/diff_rep_analysis.rds",
-        "results/batch_corrected.rds"]
+        rds=["results/model_matrix.rds", "results/diff_rep_analysis.rds"]
     output:
-        rds=["results/glmFit.rds", "results/corrected-glmFit.rds"]
+        rds="results/glmFit.rds"
     log:
         out = "logs/glmFit.out",
         err = "logs/glmFit.err" 
@@ -169,10 +168,9 @@ rule glmFit:
 
 rule glmLRT:
     input:
-        rds=["results/contrasts_matrix.rds", "results/glmFit.rds",
-        "results/corrected-glmFit.rds"]
+        rds=["results/contrasts_matrix.rds", "results/glmFit.rds"]
     output:
-        rds=["results/{contrast}-glmLRT.rds", "results/corrected-{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     params:
         contrast=get_contrast
     log:
@@ -187,11 +185,11 @@ rule glmLRT:
 
 rule expression_heatmap:
     input:
-        rds=["results/filter_hairpins.rds",
-        "results/{contrast}-glmLRT.rds",
-        "results/corrected-{contrast}-glmLRT.rds"]
+        rds=["results/{contrast}-glmLRT.rds", 
+        "results/filter_hairpins.rds", 
+        "results/corrected_counts.rds"]
     output:
-        plot=["plots/{contrast}-expression-heatmap.png", 
+        plot=["plots/{contrast}-expression-heatmap.png",
         "plots/corrected-{contrast}-expression-heatmap.png"]
     params:
         FC=config["FC"]
@@ -207,11 +205,9 @@ rule expression_heatmap:
 
 rule volcano_plot:
     input:
-        rds=["results/{contrast}-glmLRT.rds",
-        "results/corrected-{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        plot=["plots/{contrast}-volcano-plot.png", 
-        "plots/corrected-{contrast}-volcano-plot.png"]
+        plot="plots/{contrast}-volcano-plot.png"
     log:
         out = "logs/{contrast}-volcano-plot.out",
         err = "logs/{contrast}-volcano-plot.err" 
@@ -224,9 +220,9 @@ rule volcano_plot:
    
 rule hairpin_histogram:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/corrected-{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        plot=["plots/{contrast}-hairpin-histogram.png", "plots/corrected-{contrast}-hairpin-histogram.png"]
+        plot="plots/{contrast}-hairpin-histogram.png"
     log:
         out = "logs/{contrast}-hairpin-histogram.out",
         err = "logs/{contrast}-hairpin-histogram.err"
@@ -239,9 +235,9 @@ rule hairpin_histogram:
 
 rule top_hairpins:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/corrected-{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        tsv=["results/{contrast}-top-ranked-hairpins.tsv", "results/corrected-{contrast}-top-ranked-hairpins.tsv"]
+        tsv="results/{contrast}-top-ranked-hairpins.tsv"
     log:
         out = "logs/{contrast}-top-ranked-hairpins.out",
         err = "logs/{contrast}-top-ranked-hairpins.err"
@@ -254,10 +250,10 @@ rule top_hairpins:
 
 rule FDR_hairpins:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/corrected-{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
-        tsv=["results/{contrast}-FDR-sig-hairpins.tsv", "results/corrected-{contrast}-FDR-sig-hairpins.tsv"],
-        rds=["results/{contrast}-FDR_hairpins.rds", "results/corrected-{contrast}-FDR_hairpins.rds"]
+        tsv="results/{contrast}-FDR-sig-hairpins.tsv",
+        rds="results/{contrast}-FDR_hairpins.rds"
     params:
         threshold=config["FDR"]
     log:
@@ -272,10 +268,9 @@ rule FDR_hairpins:
 
 rule plotSMEAR:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_hairpins.rds",
-            "results/corrected-{contrast}-glmLRT.rds", "results/corrected-{contrast}-FDR_hairpins.rds"]
+        rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_hairpins.rds"]
     output:
-        plot=["plots/{contrast}-plotSmear.png", "plots/corrected-{contrast}-plotSmear.png"]
+        plot="plots/{contrast}-plotSmear.png"
     log:
         out = "logs/{contrast}-plotSmear.out",
         err = "logs/{contrast}-plotSmear.err"
