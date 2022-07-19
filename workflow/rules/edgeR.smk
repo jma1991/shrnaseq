@@ -281,4 +281,21 @@ rule plotSMEAR:
     script:
         "../scripts/plotSMEAR.R"       
 
-
+rule camera:
+    input:
+        rds=["results/contrasts_matrix.rds", "results/model_matrix.rds", 
+        "results/diff_rep_analysis.rds"]
+    output:
+        tsv="results/{contrast}-camera.tsv",
+        rds="results/{contrast}-camera.rds"
+    params:
+        contrast=get_contrast
+    log:
+        out = "logs/{contrast}-camera.out",
+        err = "logs/{contrast}-camera.err"
+    message:
+        "Gene Set Test"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/camera.R"
