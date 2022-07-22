@@ -6,7 +6,7 @@ def get_final_output():
         "plots/MDS-plot.png",
         "plots/corrected-MDS-plot.png",
         "results/model_matrix.rds",
-        "results/diff_rep_analysis.rds",
+        "results/estimateDisp.rds",
         "plots/BCV-plot.png",
         "plots/PCA-plot.png",
         "plots/corrected-PCA-plot.png",

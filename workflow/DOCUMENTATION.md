@@ -69,12 +69,12 @@ After the workflow is successfully run the output is found in results and plots 
 results
 ├── contrasts_matrix.rds
 ├── corrected_counts.rds
-├── camera.rds
-├── camera.tsv
-├── FDR_hairpins.rds
-├── FDR-sig-hairpins.tsv
-├── glmLRT.rds
-├── top-ranked-hairpins.tsv
+├── {contrast}-camera.rds
+├── {contrast}-camera.tsv
+├── {contrast}-FDR_hairpins.rds
+├── {contrast}-FDR-sig-hairpins.tsv
+├── {contrast}-glmLRT.rds
+├── {contrast}-top-ranked-hairpins.tsv
 ├── diff_rep_analysis.rds
 ├── filter_hairpins.rds
 ├── glmFit.rds
@@ -85,14 +85,18 @@ results
 ```console
 plots
 ├── BCV-plots.png
+├── corrected-{contrast}-expression-heatmap.png
+├── corrected-MDS-plot.png
+├── corrected-PCA-plot.png
+├── corrected-sample-dist-heatmap.png
 ├── counts-index-hairpin.png
-├── expression-heatmap.png
-├── hairpin-histogram.png
+├── {contrast}-expression-heatmap.png
+├── {contrast}-hairpin-histogram.png
 ├── MDS-plot.png
 ├── PCA-plot.png
-├── plotSmear.png
+├── {contrast}-plotSmear.png
 ├── sample-dist-heatmap.png
-└── volcano-plot.png
+└── {contrast}-volcano-plot.png
 ```
 
 See below for details of each output file. Any contrast-specific files include the contrast name. 
@@ -134,7 +138,7 @@ See below for details of each output file. Any contrast-specific files include t
 | `{contrast}-FDR_hairpins.rds` | RDS | Vector of hairpins |
 | `{contrast}-plotSmear.png` | PNG | Plots log-Fold Change versus log-CPM  |
 
-#### Gene set analysis 
+#### Gene level analysis 
 | File | Format | Description |
 | --- | --- | --- |
 | `{contrast}-camera.tsv` | TSV|  Table of gene results  |
