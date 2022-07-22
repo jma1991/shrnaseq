@@ -33,7 +33,7 @@ rule filter_hairpins:
 
 rule corrected_counts:
     input:
-        rds="results/diff_rep_analysis.rds"
+        rds="results/estimateDisp.rds"
     output:
         rds="results/corrected_counts.rds"
     log:
@@ -76,20 +76,20 @@ rule contrasts_matrix:
     script:
         "../scripts/contrasts_matrix.R"
 
-rule diff_rep_analysis:
+rule estimateDisp:
     input:
         rds=["results/filter_hairpins.rds", "results/model_matrix.rds"]
     output:
-        rds="results/diff_rep_analysis.rds"
+        rds="results/estimateDisp.rds"
     log:
-        out = "logs/diff_rep_analysis.out",
-        err = "logs/diff_rep_analysis.err"
+        out = "logs/estimateDisp.out",
+        err = "logs/estimateDisp.err"
     message: 
         "Perform differential representation analysis"
     conda:
         "../envs/edger.yaml"
     script:
-        "../scripts/diff_rep_analysis.R" 
+        "../scripts/estimateDisp.R" 
 
 rule MDS_plot:
     input:
@@ -138,7 +138,7 @@ rule sample_dist_heatmap:
     
 rule BVC_plot:
     input:
-        rds="results/diff_rep_analysis.rds"
+        rds="results/estimateDisp.rds"
     output:
         plot="plots/BCV-plot.png"
     log:
@@ -153,7 +153,7 @@ rule BVC_plot:
 
 rule glmFit:
     input:
-        rds=["results/model_matrix.rds", "results/diff_rep_analysis.rds"]
+        rds=["results/model_matrix.rds", "results/estimateDisp.rds"]
     output:
         rds="results/glmFit.rds"
     log:
@@ -284,7 +284,7 @@ rule plotSMEAR:
 rule camera:
     input:
         rds=["results/contrasts_matrix.rds", "results/model_matrix.rds", 
-        "results/diff_rep_analysis.rds"]
+        "results/estimateDisp.rds"]
     output:
         tsv="results/{contrast}-camera.tsv",
         rds="results/{contrast}-camera.rds"
@@ -299,3 +299,4 @@ rule camera:
         "../envs/edger.yaml"
     script:
         "../scripts/camera.R"
+ 
