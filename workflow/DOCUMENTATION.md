@@ -47,7 +47,7 @@ The sample tsv file need to be formatted with the following columns as below:
 Columns:
 
 | Column | Description |
-| --- | --- | |
+| --- | --- |
 | ID | Sample ID |
 | Sequences | Index sequences |
 | group | Sample condition | 

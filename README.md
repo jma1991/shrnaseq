@@ -45,7 +45,7 @@ For further details on Snakemake, see the [Snakemake documentation](https://snak
 
 ## Documentation
 
-See the [Documentation](workflow/DOCUMENTATION.md) file for all configuration, execution, and output information.
+See the [Documentation](workflow/DOCUMENTATION.md) file for configuration and output information.
 
 ## Acknowledgements
 
