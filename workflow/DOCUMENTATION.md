@@ -71,9 +71,13 @@ results
 ├── corrected_counts.rds
 ├── {contrast}-camera.rds
 ├── {contrast}-camera.tsv
+├──{contrast}-combinded_logFC.tsv
+├──{contrast}-combinded_logFC.rds
 ├── {contrast}-FDR_hairpins.rds
 ├── {contrast}-FDR-sig-hairpins.tsv
 ├── {contrast}-glmLRT.rds
+├──{contrast}-stouffers.tsv
+├──{contrast}-stouffers.rds
 ├── {contrast}-top-ranked-hairpins.tsv
 ├── diff_rep_analysis.rds
 ├── filter_hairpins.rds
@@ -143,6 +147,10 @@ See below for details of each output file. Any contrast-specific files include t
 | --- | --- | --- |
 | `{contrast}-camera.tsv` | TSV|  Table of gene results  |
 | `{contrast}-camera.rds` | RDS | Dataframe |
+| `{contrast}-combinded_logFC.tsv` | TSV|  Table of gene results  |
+| `{contrast}-combinded_logFC.rds` | RDS | Dataframe |
+| `{contrast}-stouffers.tsv` | TSV|  Table of gene results  |
+| `{contrast}-stouffers.rds` | RDS | Dataframe |
 
 ## Tests
 
@@ -166,3 +174,4 @@ continuous integration with GitHub Actions.
 - RColorBrewer
 - ggplot2
 - matrixStats
+- metap
