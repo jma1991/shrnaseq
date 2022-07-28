@@ -300,3 +300,37 @@ rule camera:
     script:
         "../scripts/camera.R"
  
+rule stouffers:
+    input:
+        rds=["results/estimateDisp.rds", 
+        "results/{contrast}-glmLRT.rds"]
+    output:
+        tsv="results/{contrast}-stouffers.tsv",
+        rds="results/{contrast}-stouffers.rds"
+    log:
+        out = "logs/{contrast}-stouffers.out",
+        err = "logs/{contrast}-stouffers.err"
+    message:
+        "Stouffer's method"
+    conda:
+        "../envs/stouffers.yaml"
+    script:
+        "../scripts/stouffers.R"
+
+rule combinded_logFC:
+    input:
+        rds=["results/estimateDisp.rds", 
+        "results/{contrast}-glmLRT.rds"]
+    output:
+        tsv="results/{contrast}-combinded_logFC.tsv",
+        rds="results/{contrast}-combinded_logFC.rds"
+    log:
+        out = "logs/{contrast}-combinded_logFC.out",
+        err = "logs/{contrast}-combinded_logFC.err"
+    message:
+        "Combinded logFC per gene"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/combinded_logFC.R"
+  

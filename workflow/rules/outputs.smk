@@ -15,18 +15,22 @@ def get_final_output():
         "results/glmFit.rds"
     ]
     contrasts = config["contrast"]
-    for x in contrasts:
+    for contrast in contrasts:
 
-        output.append(f"results/{x}-glmLRT.rds")
-        output.append(f"plots/{x}-expression-heatmap.png")
-        output.append(f"plots/{x}-volcano-plot.png")
-        output.append(f"plots/{x}-hairpin-histogram.png")
-        output.append(f"results/{x}-top-ranked-hairpins.tsv")
-        output.append(f"results/{x}-FDR-sig-hairpins.tsv")
-        output.append(f"results/{x}-FDR_hairpins.rds")
-        output.append(f"plots/{x}-plotSmear.png")
-        output.append(f"results/{x}-camera.tsv")
-        output.append(f"results/{x}-camera.rds")
-        output.append(f"plots/corrected-{x}-expression-heatmap.png")
+        output.append(f"results/{contrast}-glmLRT.rds")
+        output.append(f"plots/{contrast}-expression-heatmap.png")
+        output.append(f"plots/{contrast}-volcano-plot.png")
+        output.append(f"plots/{contrast}-hairpin-histogram.png")
+        output.append(f"results/{contrast}-top-ranked-hairpins.tsv")
+        output.append(f"results/{contrast}-FDR-sig-hairpins.tsv")
+        output.append(f"results/{contrast}-FDR_hairpins.rds")
+        output.append(f"plots/{contrast}-plotSmear.png")
+        output.append(f"results/{contrast}-camera.tsv")
+        output.append(f"results/{contrast}-camera.rds")
+        output.append(f"plots/corrected-{contrast}-expression-heatmap.png")
+        output.append(f"results/{contrast}-stouffers.tsv")
+        output.append(f"results/{contrast}-stouffers.rds")
+        output.append(f"results/{contrast}-combinded_logFC.tsv")
+        output.append(f"results/{contrast}-combinded_logFC.rds")
 
     return output
