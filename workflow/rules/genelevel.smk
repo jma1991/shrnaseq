@@ -20,8 +20,7 @@ rule camera:
  
 rule stouffers:
     input:
-        rds=["results/estimateDisp.rds", 
-        "results/{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
         tsv="results/{contrast}-stouffers.tsv",
         rds="results/{contrast}-stouffers.rds"
@@ -37,8 +36,7 @@ rule stouffers:
 
 rule combinded_logFC:
     input:
-        rds=["results/estimateDisp.rds", 
-        "results/{contrast}-glmLRT.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
         tsv="results/{contrast}-combinded_logFC.tsv",
         rds="results/{contrast}-combinded_logFC.rds"

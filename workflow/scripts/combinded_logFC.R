@@ -10,24 +10,30 @@ analysis=function(input, output, log) {
 
     #Script
     library(edgeR)
-    xglm=readRDS(input$rds[1])
-    lrt=readRDS(input$rds[2])
+    lrt=readRDS(input$rds)
 
-    combinded_logFC=NULL
-    xglm$genes$Gene=as.character(xglm$genes$Gene)
-    for (i in unique(xglm$genes$Gene)) {
-    sel = xglm$genes$Gene == i & !is.na(xglm$genes$Gene)
-    if (sum(sel) > 1) {
-        logFC=mean(lrt$table$logFC[which(sel)])
-        logFC=cbind(i,logFC)
-        combinded_logFC=rbind(combinded_logFC, logFC)
-     }
+    dat=NULL
+    for (i in unique(lrt$genes$Gene)) {
+    sel = lrt$genes$Gene == i & !is.na(lrt$genes$Gene)
+    logFC=mean(lrt$table$logFC[which(sel)])
+    
+    res=lrt$table[which(sel),]
+    up=res[which(res$logFC>0),]
+    down=res[which(res$logFC<0),]
+    if ((min(up$Pvalue)>min(down$PValue)) | nrow(up)==0)
+        dir="Down"
+    if ((min(up$Pvalue)<min(down$PValue)) | nrow(down)==0)
+        dir="Up"
+    
+    logFC=cbind(i,logFC, dir)
+    dat=rbind(dat, logFC)
+    
     }
 
-    colnames(combinded_logFC)=c("Gene", "combinded-logFC")
+    colnames(dat)=c("Gene", "mean-logFC", "Direction-(smallest-pval)")
 
-    write.table(combinded_logFC, output$tsv, quote=F, row.names=F)
-    saveRDS(combinded_logFC,file=output$rds)
+    write.table(dat, output$tsv, quote=F, row.names=F)
+    saveRDS(dat,file=output$rds)
 
 }
 

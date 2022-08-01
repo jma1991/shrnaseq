@@ -11,23 +11,24 @@ analysis=function(input, output, log) {
     #Script
     library(edgeR)
     library(metap)
-    xglm=readRDS(input$rds[1])
-    lrt=readRDS(input$rds[2])
+    lrt=readRDS(input$rds)
 
-    stouffers = NULL
-    xglm$genes$Gene=as.character(xglm$genes$Gene)
-    for (i in unique(xglm$genes$Gene)) {
-    sel = xglm$genes$Gene == i & !is.na(xglm$genes$Gene)
+    dat = NULL
+
+    for (i in unique(lrt$genes$Gene)) {
+    sel = lrt$genes$Gene == i & !is.na(lrt$genes$Gene)
     if (sum(sel) > 1) {
-        p=sumz(lrt$table$PValue[which(sel)])
-        pvals=cbind(i,p$p)
-        stouffers=rbind(stouffers,pvals)
+        stouffers=sumz(lrt$table$PValue[which(sel)])[2]
+        nhairpins=length(which(sel))
+        pvals=cbind(i,nhairpins, stouffers)
+        dat=rbind(dat,pvals)
     }
     }
-    colnames(stouffers)=c("Gene", "Stouffer's")
+    dat=cbind(dat,p.adjust(dat[,"stouffers"], method="fdr"))
+    colnames(dat)=c("Gene", "nhairpins", "stouffers", "FDR")
 
-    write.table(stouffers, output$tsv, quote=F, row.names=F)
-    saveRDS(stouffers,file=output$rds)
+    write.table(dat, output$tsv, quote=F, row.names=F)
+    saveRDS(dat,file=output$rds)
 
 }
 

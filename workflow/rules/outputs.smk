@@ -27,7 +27,7 @@ def get_final_output():
         output.append(f"plots/{contrast}-plotSmear.png")
         output.append(f"results/{contrast}-camera.tsv")
         output.append(f"results/{contrast}-camera.rds")
-        output.append(f"plots/corrected-{contrast}-expression-heatmap.png")
+        output.append(f"plots/{contrast}-corrected-expression-heatmap.png")
         output.append(f"results/{contrast}-stouffers.tsv")
         output.append(f"results/{contrast}-stouffers.rds")
         output.append(f"results/{contrast}-combinded_logFC.tsv")

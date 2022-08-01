@@ -6,7 +6,7 @@ rule expression_heatmap:
         "results/corrected_counts.rds"]
     output:
         plot=["plots/{contrast}-expression-heatmap.png",
-        "plots/corrected-{contrast}-expression-heatmap.png"]
+        "plots/{contrast}-corrected-expression-heatmap.png"]
     params:
         FC=config["FC"]
     log:
