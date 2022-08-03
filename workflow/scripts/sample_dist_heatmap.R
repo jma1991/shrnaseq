@@ -25,11 +25,12 @@ analysis=function(input, output, log) {
     colnames(sampleDistMatrix) <- NULL
     colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 
-    png(output$plot[1], width=2800, height=2000, res=400)
+    png(output$plot[1], width=2000, height=1500, res=400)
     pheatmap(sampleDistMatrix,
             clustering_distance_rows = sampleDists,
             clustering_distance_cols = sampleDists,
-            col = colors)
+            col = colors,
+            main = "Sample distances")
     dev.off()
 
     #batch corrected
@@ -40,11 +41,12 @@ analysis=function(input, output, log) {
     colnames(sampleDistMatrix) <- NULL
     colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 
-    png(output$plot[2], width=2800, height=2000, res=400)
+    png(output$plot[2], width=2000, height=1500, res=400)
     pheatmap(sampleDistMatrix,
          clustering_distance_rows = sampleDists,
          clustering_distance_cols = sampleDists,
-         col = colors)
+         col = colors,
+            main = "Batch corrected sample distances")
     dev.off()
 }
   

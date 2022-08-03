@@ -32,5 +32,6 @@ def get_final_output():
         output.append(f"results/{contrast}-stouffers.rds")
         output.append(f"results/{contrast}-combinded_logFC.tsv")
         output.append(f"results/{contrast}-combinded_logFC.rds")
+        output.append(f"results/{contrast}-shiny.Rdata")
 
     return output

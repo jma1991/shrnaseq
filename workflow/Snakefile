@@ -9,6 +9,7 @@ include: "rules/qc.smk"
 include: "rules/diffexp.smk"
 include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
+include: "rules/shiny.smk"
 
 # Target rule
 rule all:
