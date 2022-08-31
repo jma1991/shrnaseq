@@ -4,12 +4,13 @@ configfile: "config/config.yaml"
 # Workflow rules
 include: "rules/common.smk"
 include: "rules/outputs.smk"
+include: "rules/resources.smk"
 include: "rules/processing.smk"
 include: "rules/qc.smk"
 include: "rules/diffexp.smk"
 include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
-include: "rules/shiny.smk"
+include: "rules/ge.smk"
 
 # Target rule
 rule all:

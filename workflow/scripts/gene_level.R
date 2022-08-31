@@ -1,0 +1,57 @@
+analysis=function(input, output, log) {
+    #Log 
+    out <- file(log$out, open = "wt")
+
+    err <- file(log$err, open = "wt")
+
+    sink(out, type = "output")
+
+    sink(err, type = "message")
+
+    #Script
+    library(edgeR)
+    library(metap)
+    lrt=readRDS(input$rds)
+    # gene level
+    dat=NULL
+
+    for (i in unique(lrt$genes$Gene)) {
+    sel = lrt$genes$Gene == i & !is.na(lrt$genes$Gene)
+    #calculate average logFC
+    logFC=mean(lrt$table$logFC[which(sel)])
+    #calculate stouffers pval
+    stouffers=as.numeric(sumz(lrt$table$PValue[which(sel)])[2])
+    
+    #restrict hairpins to gene of iteration
+    res=lrt$table[which(sel),]
+    
+    #select up regulated hairpins
+    up=res[which(res$logFC>0),]
+    #select down regulated hairpins
+    down=res[which(res$logFC<0),]
+    
+    if (logFC >0) {
+        dir="Up"
+    } else {
+        dir="Down"
+    }
+    
+    if ((min(up$Pvalue)>min(down$PValue)) | nrow(up)==0)
+        dir_pval="Down"
+    if ((min(up$Pvalue)<min(down$PValue)) | nrow(down)==0)
+        dir_pval="Up"
+    nhairpin=length(which(sel))
+    
+    vector=cbind(i,nhairpin, logFC, dir, dir_pval, stouffers)
+    dat=rbind(dat, vector)
+    
+    }
+    dat=cbind(dat,p.adjust(dat[,"stouffers"], method="fdr"))
+    colnames(dat)=c("Gene", "Number of RNAs", "mean logFC", "Direction (mean logFC)", "Direction (smallest pvalue)", "Stouffer's p value", "Stouffer's FDR")
+
+    write.table(dat, output$tsv, quote=F, row.names=F, sep=",")
+    saveRDS(dat,file=output$rds)
+
+}
+
+analysis(snakemake@input, snakemake@output, snakemake@log)

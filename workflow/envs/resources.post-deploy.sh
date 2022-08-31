@@ -1,0 +1,1 @@
+Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org"); BiocManager::install(version = "3.15"); BiocManager::install(c("BiocGenerics", "S4Vectors", "IRanges", "AnnotationDbi"), lib="resources/bioconductor/organism/lib/R/library/"); BiocManager::install("AnnotationDbi", lib="resources/bioconductor/organism/lib/R/library/")'

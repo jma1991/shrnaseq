@@ -10,6 +10,15 @@ analysis=function(input, output, params, log) {
 
     #Script
     library(edgeR)
-    go <- goana(lrt, species=params$species)
+    library(params$organism, lib.loc="resources/bioconductor/organism/lib/R/library", character.only = TRUE)
+
+    matrix=readRDS(input$rds[1])
+    lrt=readRDS(input$rds[2])
+    go <- goana(lrt, con=matrix[, params$contrast], FDR=params$FDR,
+    species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
     topgo <- topGO(go, sort="up")
+
+    write.table(go, file = output$tsv, quote = FALSE, sep = '\t', col.names = NA)
 }
+
+analysis(snakemake@input, snakemake@output, snakemake@params, snakemake@log)

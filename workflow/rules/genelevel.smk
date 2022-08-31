@@ -18,35 +18,21 @@ rule camera:
     script:
         "../scripts/camera.R"
  
-rule stouffers:
+rule gene_level:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:
-        tsv="results/{contrast}-stouffers.tsv",
-        rds="results/{contrast}-stouffers.rds"
+        tsv="results/{contrast}-gene-level.tsv",
+        rds="results/{contrast}-gene-level.rds"
     log:
-        out = "logs/{contrast}-stouffers.out",
-        err = "logs/{contrast}-stouffers.err"
+        out = "logs/{contrast}-gene-level.out",
+        err = "logs/{contrast}-gene-level.err"
     message:
-        "Stouffer's method"
+        "Gene level analysis"
     conda:
-        "../envs/stouffers.yaml"
+        "../envs/gene_level.yaml"
     script:
-        "../scripts/stouffers.R"
+        "../scripts/gene_level.R"
 
-rule combinded_logFC:
-    input:
-        rds="results/{contrast}-glmLRT.rds"
-    output:
-        tsv="results/{contrast}-combinded_logFC.tsv",
-        rds="results/{contrast}-combinded_logFC.rds"
-    log:
-        out = "logs/{contrast}-combinded_logFC.out",
-        err = "logs/{contrast}-combinded_logFC.err"
-    message:
-        "Combinded logFC per gene"
-    conda:
-        "../envs/edger.yaml"
-    script:
-        "../scripts/combinded_logFC.R"
+
   

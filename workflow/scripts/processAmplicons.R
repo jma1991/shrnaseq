@@ -1,4 +1,4 @@
-analysis= function(input, output, log) {
+analysis= function(input, output, params, log) {
     #Log 
     out <- file(log$out, open = "wt")
 
@@ -10,7 +10,14 @@ analysis= function(input, output, log) {
 
     #Script
     library(edgeR)
-    x = processAmplicons(input$fastq, barcodefile=input$index, hairpinfile=input$hairpin, verbose=TRUE)
+    print(params$hairpinBeforeBarcode)
+    x = processAmplicons(c(input$fastq), 
+                        readfile2=params$readfile2,
+                        barcodefile=input$index, 
+                        hairpinfile=input$hairpin, 
+                        verbose=TRUE,
+                        hairpinBeforeBarcode=params$hairpinBeforeBarcode
+                        )
     saveRDS(x, file = output$rds)
 }
-analysis(snakemake@input, snakemake@output, snakemake@log)
+analysis(snakemake@input, snakemake@output,snakemake@params,snakemake@log)

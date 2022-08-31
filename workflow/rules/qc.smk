@@ -26,7 +26,7 @@ rule MDS_plot:
     message:
         "Multidimensional Scaling plot to visualise relationship between samples"
     conda:
-        "../envs/edger.yaml"
+        "../envs/heatmap.yaml"
     script:
         "../scripts/MDS_plot.R"
 

@@ -7,5 +7,6 @@ dependencies:
   - bioconductor-deseq2
   - bioconductor-deformats
   - bioconductor-mixomics
+  - bioconductor-SummarizedExperiment
   - r-pheatmap
   - r-rcolorbrewer

@@ -14,6 +14,8 @@ analysis=function(input, output, log) {
     des=readRDS(input$rds[3])
     matrix=readRDS(input$rds[4])
     xglm=readRDS(input$rds[5])
+
+    for (i in matrix[, params$contrast])
     lrt=readRDS(input$rds[6])
     top2ids=readRDS(input$rds[7])
 

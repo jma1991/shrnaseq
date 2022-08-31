@@ -17,11 +17,10 @@ analysis=function(input, output, log) {
     library(RColorBrewer)
 
     x=readRDS(input$rds[1])
-    dds= as.DESeqDataSet(x, design = ~ x$samples$group)
-    vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
-    sampleDists <- dist(t(assay(vsd)))
+    mat=cpm(x$counts, log=TRUE, prior.count = 1)
+    sampleDists <- dist(t(mat))
     sampleDistMatrix <- as.matrix(sampleDists)
-    rownames(sampleDistMatrix) <- paste(vsd$group, vsd$Replicate, sep = " - " )
+    rownames(sampleDistMatrix) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
     colnames(sampleDistMatrix) <- NULL
     colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 

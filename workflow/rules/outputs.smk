@@ -1,6 +1,6 @@
 def get_final_output():
     output = [
-        "results/processAmplicons.rds",
+        directory(expand("resources/bioconductor/organism/lib/R/library/{organism}", organism = config["organism"])), "results/processAmplicons.rds",
         "plots/counts-index-hairpins.png",
         "results/corrected_counts.rds",
         "plots/MDS-plot.png",
@@ -16,7 +16,6 @@ def get_final_output():
     ]
     contrasts = config["contrast"]
     for contrast in contrasts:
-
         output.append(f"results/{contrast}-glmLRT.rds")
         output.append(f"plots/{contrast}-expression-heatmap.png")
         output.append(f"plots/{contrast}-volcano-plot.png")
@@ -28,10 +27,9 @@ def get_final_output():
         output.append(f"results/{contrast}-camera.tsv")
         output.append(f"results/{contrast}-camera.rds")
         output.append(f"plots/{contrast}-corrected-expression-heatmap.png")
-        output.append(f"results/{contrast}-stouffers.tsv")
-        output.append(f"results/{contrast}-stouffers.rds")
-        output.append(f"results/{contrast}-combinded_logFC.tsv")
-        output.append(f"results/{contrast}-combinded_logFC.rds")
-        output.append(f"results/{contrast}-shiny.Rdata")
+        output.append(f"results/{contrast}-gene-level.tsv")
+        output.append(f"results/{contrast}-gene-level.rds")
 
+        
+    
     return output

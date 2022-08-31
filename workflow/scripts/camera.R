@@ -20,9 +20,9 @@ analysis=function(input, output, params, log) {
     unq = unq[!is.na(unq)]
 
     for (i in unq) {
-    sel = genesymbols == i & !is.na(genesymbols)
-    if (sum(sel) > 3) 
-        genesymbollist[[i]] =which(sel)
+        sel = genesymbols == i & !is.na(genesymbols)
+        if (sum(sel) > 1) 
+            genesymbollist[[i]] =which(sel)
     }
     camera.res = camera(xglm, index = genesymbollist, des, contrast=matrix[, params$contrast])
     camera.res=camera.res[!is.na(camera.res$FDR),]

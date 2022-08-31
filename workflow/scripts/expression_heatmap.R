@@ -52,8 +52,8 @@ analysis=function(input, output, params, log) {
     mat <- subset(mat, rownames(mat) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
 
-    png(output$plot[1], width=2000, height=1800, res=400)
-    pheatmap(mat, col = colors, main="Differential expression across the groups (logCPM)")
+    png(output$plot[1], width=3000, height=2800, res=400)
+    pheatmap(mat, col = colors,border_color=NA, main="Differential expression \n across the groups (logCPM)")
     dev.off()
 
     #batch corrected
@@ -64,8 +64,8 @@ analysis=function(input, output, params, log) {
     mat = subset(mat, rownames(mat) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
 
-    png(output$plot[2], width=2000, height=1800, res=400)
-    pheatmap(mat, col = colors, main="Batch corrected differential \n expression across the groups (logCPM)")
+    png(output$plot[2], width=3000, height=2800, res=400)
+    pheatmap(mat, col = colors, border_color=NA, main="Batch corrected differential expression \n across the groups (logCPM)")
      dev.off()
 }
   

@@ -12,6 +12,7 @@ analysis=function(input, output, log) {
     library(edgeR)
     library(matrixStats)
     library(ggplot2)
+    library(RColorBrewer)
 
     x=readRDS(input$rds[1])
     x$samples$group=factor(x$samples$group, levels = c(unique(x$samples$group)))
@@ -29,6 +30,8 @@ analysis=function(input, output, log) {
 
     dat <- data.frame(PC1 = pca$x[,1], PC2 = pca$x[,2], group = x$samples$group)
 
+    colors <- brewer.pal(length(unique(x$samples$group)),"Set3")
+
     plt=ggplot(dat, aes_string(x = "PC1", y = "PC2", color = "group")) + 
     geom_point(size = 3) + 
     xlab(paste0("PC1: ", round(pct[1] * 100), "% variance")) + 
@@ -36,9 +39,12 @@ analysis=function(input, output, log) {
     coord_fixed() +
     theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    labs(title="Principal component analysis") + theme(legend.position="bottom")
+    labs(title="Principal component analysis") + 
+    theme(plot.title = element_text(hjust = 0.5,  face="bold")) + theme(legend.position="bottom") +
+    scale_color_manual(values=colors)
 
-    png(output$plot[1], width=2200, height=2000, res=400)
+    png(output$plot[1], width=2500, height=2000, res=400)
+    par(mar=c(5,5,6,5))
     print(plt)
     dev.off()
 
@@ -55,7 +61,7 @@ analysis=function(input, output, log) {
     pct <- (pca$sdev ^ 2) / sum(pca$sdev ^ 2)
 
     dat <- data.frame(PC1 = pca$x[,1], PC2 = pca$x[,2], group = x$samples$group)
-
+    colors <- brewer.pal(length(unique(x$samples$group)),"Set3")
     plt=ggplot(dat, aes_string(x = "PC1", y = "PC2", color = "group")) + 
     geom_point(size = 3) + 
     xlab(paste0("PC1: ", round(pct[1] * 100), "% variance")) + 
@@ -63,9 +69,12 @@ analysis=function(input, output, log) {
     coord_fixed() +
     theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    labs(title="Batch corrected principal component analysis") + theme(legend.position="bottom")
+    labs(title="Batch corrected principal component analysis") +
+    theme(plot.title = element_text(hjust = 0.5,  face="bold")) +  theme(legend.position="bottom") +
+    scale_color_manual(values=colors)
 
-    png(output$plot[2], width=2200, height=2000, res=400)
+    png(output$plot[2], width=2500, height=2000, res=400)
+    par(mar=c(5,5,6,5))
     print(plt)
     dev.off()
 

@@ -1,28 +1,50 @@
 # specify organism
-organism: Mus musculus
+organism: org.Mm.eg.db
 
 # path to sample file
-samples: config/Samples2.tsv
+samples: config/GSE139118_Pool1revcompbarcodes.txt
 
 # path to hairpin file
-hairpins: config/Hairpins2.txt
+hairpins: config/GSE139118_Pool1revcompshRNA.tsv
 
 # path to fastq file
-fastq: config/subset.fastq
+fastq: [config/DMSO.D2.R1_subset.fastq,
+        config/DMSO.D2.R2_subset.fastq,
+        config/DMSO.D4.R1_subset.fastq,
+        config/DMSO.D4.R2_subset.fastq,
+        config/DMSO.D8.R1_subset.fastq,
+        config/DMSO.D8.R2_subset.fastq,
+        config/DMSO.D10.R1_subset.fastq,
+        config/DMSO.D10.R2_subset.fastq,
+        config/DMSO.D14.R1_subset.fastq,
+        config/DMSO.D14.R2_subset.fastq,
+        config/IBET.D2.R1_subset.fastq,
+        config/IBET.D2.R2_subset.fastq,
+        config/IBET.D4.R1_subset.fastq,
+        config/IBET.D4.R2_subset.fastq,
+        config/IBET.D8.R1_subset.fastq,
+        config/IBET.D8.R2_subset.fastq,
+        config/IBET.D10.R1_subset.fastq,
+        config/IBET.D10.R2_subset.fastq,
+        config/IBET.D14.R1_subset.fastq,
+        config/IBET.D14.R2_subset.fastq]
+
+
+#one or more fastq filenames for reverse read 
+readfile2: NULL
+
+# hairpin sequence before barcode (TRUE or FALSE)
+hairpinBeforeBarcode: TRUE
 
 # specify contrasts
 contrast:
-  Day2_vs_Day5GFPpos:
-    - Day2-Day5GFPpos
-  Day2_vs_Day5GRPneg:
-    - Day2-Day5GFPneg
-  Day2_vs_Day10:
-    - Day2-Day10
-  Day5GFPpos_vs_Day5GRPneg:
-    - Day5GFPpos-Day5GFPneg
+  DMSO.D2_vs_DMSO.D8:
+  - DMSO.D2-DMSO.D8
+  DMSO.D2_vs_DMSO.D14:
+  - DMSO.D2-DMSO.D14
 
 # specify FDR threshold
 FDR: 0.05
 
 # specifiy fold change threshold
-FC: 1.5
+FC: 2.5
