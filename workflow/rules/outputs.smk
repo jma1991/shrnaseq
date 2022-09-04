@@ -1,6 +1,7 @@
 def get_final_output():
     output = [
-        directory(expand("resources/bioconductor/organism/lib/R/library/{organism}", organism = config["organism"])), "results/processAmplicons.rds",
+        expand("resources/bioconductor/organism/lib/R/library/{organism}", organism = config["organism"]),
+        "results/processAmplicons.rds",
         "plots/counts-index-hairpins.png",
         "results/corrected_counts.rds",
         "plots/MDS-plot.png",
@@ -30,6 +31,4 @@ def get_final_output():
         output.append(f"results/{contrast}-gene-level.tsv")
         output.append(f"results/{contrast}-gene-level.rds")
 
-        
-    
     return output
