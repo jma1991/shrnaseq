@@ -10,4 +10,4 @@ rule organism:
     message:
         "Install organism package: {params.name}"
     shell:
-        "conda create --quiet --yes --prefix {params.path} --strict-channel-priority --override-channels --channel conda-forge --channel bioconda --channel defaults bioconductor-{params.name}=3.13 1> {log.out} 2> {log.err}"
+        "conda create --quiet --yes --prefix {params.path} --strict-channel-priority --override-channels --channel conda-forge --channel bioconda --channel defaults bioconductor-{params.name} 1> {log.out} 2> {log.err}"
