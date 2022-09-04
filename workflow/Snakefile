@@ -1,6 +1,9 @@
 # Configuration file
 configfile: "config/config.yaml"
 
+# Container image
+container: "docker://continuumio/miniconda3"
+
 # Workflow rules
 include: "rules/common.smk"
 include: "rules/outputs.smk"
@@ -16,4 +19,3 @@ include: "rules/ge.smk"
 rule all:
     input:
       get_final_output()
-      
