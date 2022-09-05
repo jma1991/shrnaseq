@@ -1,4 +1,4 @@
-# Bioinformatics-Internship
+# shrnaseq
 
 Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using edgeR
 
