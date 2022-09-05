@@ -10,7 +10,7 @@ analysis=function(input, output, params, log) {
 
     #Script
     library(edgeR)
-    library(params$organism, lib.loc="resources/bioconductor/organism/lib/R/library", character.only = TRUE)
+    library(params$organism, lib.loc="resources/bioconductor/organism/lib/R/library/", character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
