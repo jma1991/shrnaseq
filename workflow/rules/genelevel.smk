@@ -1,5 +1,5 @@
 
-rule camera:
+rule camera: 
     input:
         rds=["results/contrasts_matrix.rds", "results/model_matrix.rds", 
         "results/estimateDisp.rds"]

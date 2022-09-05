@@ -5,7 +5,7 @@ rule goana:
         tsv="results/{contrast}-goana.tsv"
     params:
         contrast = get_contrast,
-        threshold=config["FDR"],
+        threshold= config["FDR"],
         organism = config["organism"]
     log:
         out = "logs/{contrast}.goana.out",
@@ -15,4 +15,4 @@ rule goana:
     conda:
         "../envs/ge.yaml"
     script:
-        "../scripts/goana.R"
+        "../scripts/goana.R" 

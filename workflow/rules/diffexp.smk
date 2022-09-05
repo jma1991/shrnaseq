@@ -5,7 +5,7 @@ rule corrected_counts:
         rds="results/corrected_counts.rds"
     log:
         out = "logs/corrected_counts.out",
-        err = "logs/corrected_counts.err"
+        err = "logs/corrected_counts.err" 
     message: 
         "Remove batch effect"
     conda:

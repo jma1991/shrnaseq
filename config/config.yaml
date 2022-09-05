@@ -36,11 +36,11 @@ hairpinBeforeBarcode: TRUE
 contrast:
   DMSO.D2_vs_DMSO.D8:
   - DMSO.D2-DMSO.D8
-  DMSO.D2_vs_DMSO.D14:
+  DMSO.D2_vs_DMSO.D10:
   - DMSO.D2-DMSO.D10
 
 # specify FDR threshold
 FDR: 0.05
 
 # specifiy fold change threshold
-FC: 2.5
+FC: 1

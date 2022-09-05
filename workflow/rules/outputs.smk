@@ -29,6 +29,7 @@ def get_final_output():
         output.append(f"plots/{contrast}-corrected-expression-heatmap.png")
         output.append(f"results/{contrast}-gene-level.tsv")
         output.append(f"results/{contrast}-gene-level.rds")
+        output.append(f"results/{contrast}-goana.tsv")
 
         
     

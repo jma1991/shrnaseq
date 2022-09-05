@@ -15,5 +15,5 @@ include: "rules/ge.smk"
 # Target rule
 rule all:
     input:
-      get_final_output()
+      get_final_output() 
       
