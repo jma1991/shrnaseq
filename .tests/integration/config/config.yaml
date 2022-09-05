@@ -10,20 +10,12 @@ hairpins: config/GSE139118_Pool1revcompshRNA.tsv
 # path to fastq file
 fastq: [config/DMSO.D2.R1_subset.fastq,
         config/DMSO.D2.R2_subset.fastq,
-        config/DMSO.D4.R1_subset.fastq,
-        config/DMSO.D4.R2_subset.fastq,
-        config/DMSO.D8.R1_subset.fastq,
-        config/DMSO.D8.R2_subset.fastq,
-        config/DMSO.D10.R1_subset.fastq,
-        config/DMSO.D10.R2_subset.fastq,
+        config/DMSO.D14.R1_subset.fastq,
+        config/DMSO.D14.R2_subset.fastq,
         config/IBET.D2.R1_subset.fastq,
         config/IBET.D2.R2_subset.fastq,
-        config/IBET.D4.R1_subset.fastq,
-        config/IBET.D4.R2_subset.fastq,
-        config/IBET.D8.R1_subset.fastq,
-        config/IBET.D8.R2_subset.fastq,
-        config/IBET.D10.R1_subset.fastq,
-        config/IBET.D10.R2_subset.fastq]
+        config/IBET.D14.R1_subset.fastq,
+        config/IBET.D14.R2_subset.fastq]
 
 
 #one or more fastq filenames for reverse read 
@@ -34,10 +26,10 @@ hairpinBeforeBarcode: TRUE
 
 # specify contrasts
 contrast:
-  DMSO.D2_vs_DMSO.D8:
-  - DMSO.D2-DMSO.D8
-  DMSO.D2_vs_DMSO.D10:
-  - DMSO.D2-DMSO.D10
+  DMSO.D2_vs_DMSO.D14:
+  - DMSO.D2-DMSO.D14
+  IBET.D2_vs_IBET.D14:
+  - IBET.D2-IBET.D14
 
 # specify FDR threshold
 FDR: 0.05
