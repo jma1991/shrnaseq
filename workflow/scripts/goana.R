@@ -14,6 +14,7 @@ analysis=function(input, output, params, log) {
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
+    row.names(lrt) <- keys(org.Mm.eg.db)[1:nrow(lrt)]
     go <- goana(lrt, con=matrix[, params$contrast], FDR=params$threshold,
     species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
     topgo <- topGO(go, sort="up")
