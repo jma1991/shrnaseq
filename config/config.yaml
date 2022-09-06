@@ -8,26 +8,10 @@ samples: config/GSE139118_Pool1revcompbarcodes.txt
 hairpins: config/GSE139118_Pool1revcompshRNA.tsv
 
 # path to fastq file
-fastq: [config/DMSO.D2.R1_subset.fastq,
-        config/DMSO.D2.R2_subset.fastq,
-        config/DMSO.D4.R1_subset.fastq,
-        config/DMSO.D4.R2_subset.fastq,
-        config/DMSO.D8.R1_subset.fastq,
-        config/DMSO.D8.R2_subset.fastq,
-        config/DMSO.D10.R1_subset.fastq,
-        config/DMSO.D10.R2_subset.fastq,
-        config/DMSO.D14.R1_subset.fastq,
-        config/DMSO.D14.R2_subset.fastq,
-        config/IBET.D2.R1_subset.fastq,
-        config/IBET.D2.R2_subset.fastq,
-        config/IBET.D4.R1_subset.fastq,
+fastq: [config/IBET.D4.R1_subset.fastq,
         config/IBET.D4.R2_subset.fastq,
         config/IBET.D8.R1_subset.fastq,
-        config/IBET.D8.R2_subset.fastq,
-        config/IBET.D10.R1_subset.fastq,
-        config/IBET.D10.R2_subset.fastq,
-        config/IBET.D14.R1_subset.fastq,
-        config/IBET.D14.R2_subset.fastq
+        config/IBET.D8.R2_subset.fastq
         ]
 
 
