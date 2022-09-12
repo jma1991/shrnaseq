@@ -6,9 +6,13 @@ rule shiny:
         "results/contrasts_matrix.rds",
         "results/estimateDisp.rds",
         "results/{contrast}-glmLRT.rds",
-        "results/{contrast}-FDR_hairpins.rds"]
+        "results/{contrast}-FDR_hairpins.rds",
+        "results/{contrast}-goana.rds",
+        "results/{contrast}-kegg.rds"]
     output:
-        rdata="results/{contrast}-shiny.Rdata"
+        rdata="results/{contrast}-shiny.RData"
+    params:
+        contrast=get_contrast
     log:
         out = "logs/{contrast}-shiny.out",
         err = "logs/{contrast}-shiny.err"

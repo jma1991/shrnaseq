@@ -31,5 +31,11 @@ def get_final_output():
         output.append(f"results/{contrast}-gene-level.tsv")
         output.append(f"results/{contrast}-gene-level.rds")
         output.append(f"results/{contrast}-goana.tsv")
+        output.append(f"results/{contrast}-goana.rds")
+        output.append(f"results/{contrast}-top_goana.tsv")
+        output.append(f"results/{contrast}-kegg.tsv")
+        output.append(f"results/{contrast}-kegg.rds")
+        output.append(f"results/{contrast}-top_kegg.tsv")
+        output.append(f"results/{contrast}-shiny.RData")
 
     return output

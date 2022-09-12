@@ -14,6 +14,7 @@ include: "rules/diffexp.smk"
 include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
 include: "rules/ge.smk"
+include: "rules/shiny.smk"
 
 # Target rule
 rule all:
