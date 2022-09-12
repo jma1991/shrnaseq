@@ -1,9 +1,8 @@
+name:
+  - ge
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - bioconductor-edger
-  - bioconductor-limma
-  - bioconductor-annotationdbi
-  - bioconductor-go.db
+  - r-base=4.2

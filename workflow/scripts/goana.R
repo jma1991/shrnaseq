@@ -9,17 +9,21 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
-    library(edgeR)
-    library(params$organism, lib.loc="resources/bioconductor/organism/lib/R/library/", character.only = TRUE)
+    library(AnnotationDbi)
+    library(params$organism, lib.loc=input$pkg, character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
-    row.names(lrt) <- keys(org.Mm.eg.db)[1:nrow(lrt)]
-    go <- goana(lrt, con=matrix[, params$contrast], FDR=params$threshold,
-    species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
-    topgo <- topGO(go, sort="up")
 
+    org <- params$organism
+    obj <- getFromNamespace(org, org)
+
+
+    row.names(lrt) <- keys(obj)[1:nrow(lrt)]
+    go <- goana(lrt, con=matrix[, params$contrast], FDR=params$threshold, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
+  
     write.table(go, file = output$tsv, quote = FALSE, sep = '\t', col.names = NA)
+    saveRDS(go,file=output$rds)
 }
 
 analysis(snakemake@input, snakemake@output, snakemake@params, snakemake@log)
