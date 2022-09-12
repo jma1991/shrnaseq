@@ -14,7 +14,6 @@ fastq: [config/IBET.D4.R1_subset.fastq,
         config/IBET.D8.R2_subset.fastq
         ]
 
-
 #one or more fastq filenames for reverse read 
 readfile2: NULL
 
@@ -30,4 +29,4 @@ contrast:
 FDR: 0.85
 
 # specifiy fold change threshold
-FC: 1.5
+FC: 2.5

@@ -45,14 +45,12 @@ analysis=function(input, output, params, log) {
     x=readRDS(input$rds[2])
     mat <- cpm(x$counts, log=TRUE, prior.count = 1)
     colnames(mat) <- paste(x$samples$group, x$samples$Replicate, sep = " - " )
-    #mat=hairpins_to_genes(mat,x)
-    #selY <- top2$table$Gene[abs(top2$table$logFC)>1.5]
     selY <- rownames(top2$table)[abs(top2$table$logFC)>params$FC]
     
     mat <- subset(mat, rownames(mat) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
 
-    png(output$plot[1], width=3000, height=2800, res=400)
+    png(output$plot[1], width=3000, height=3500, res=400)
     pheatmap(mat, col = colors,border_color=NA, main="Differential expression \n across the groups (logCPM)")
     dev.off()
 
@@ -64,7 +62,7 @@ analysis=function(input, output, params, log) {
     mat = subset(mat, rownames(mat) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)
 
-    png(output$plot[2], width=3000, height=2800, res=400)
+    png(output$plot[2], width=3000, height=3500, res=400)
     pheatmap(mat, col = colors, border_color=NA, main="Batch corrected differential expression \n across the groups (logCPM)")
      dev.off()
 }
