@@ -1,1 +1,0 @@
-Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org"); BiocManager::install(version = "3.15"); BiocManager::install("org.Mm.eg.db", lib="resources/bioconductor/organism/lib/R/library/")'

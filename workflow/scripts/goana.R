@@ -9,8 +9,9 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
+    library(limma)
     library(AnnotationDbi)
-    library(params$organism, lib.loc=input$pkg, character.only = TRUE)
+    library(params$organism, lib.loc=params$pkg, character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])

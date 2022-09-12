@@ -1,14 +1,14 @@
 rule goana:
     input:
-        rds = ["results/contrasts_matrix.rds", "results/{contrast}-glmLRT.rds"],
-        pkg = "resources/bioconductor/organism/lib/R/library/"
+        rds = ["results/contrasts_matrix.rds", "results/{contrast}-glmLRT.rds"]
     output:
         tsv="results/{contrast}-goana.tsv",
         rds="results/{contrast}-goana.rds"
     params:
         contrast = get_contrast,
         threshold= config["FDR"],
-        organism = config["organism"]
+        organism = config["organism"],
+        pkg = directory("resources/bioconductor/organism/lib/R/library/")
     log:
         out = "logs/{contrast}.goana.out",
         err = "logs/{contrast}.goana.err"
@@ -36,15 +36,15 @@ rule top_goana:
 
 rule kegg:
     input:
-        rds = ["results/contrasts_matrix.rds", "results/{contrast}-glmLRT.rds"],
-        pkg = "resources/bioconductor/organism/lib/R/library/"
+        rds = ["results/contrasts_matrix.rds", "results/{contrast}-glmLRT.rds"]
     output:
         tsv="results/{contrast}-kegg.tsv",
         rds="results/{contrast}-kegg.rds"
     params:
         contrast = get_contrast,
         threshold= config["FDR"],
-        organism = config["organism"]
+        organism = config["organism"],
+        pkg = directory("resources/bioconductor/organism/lib/R/library/")
     log:
         out = "logs/{contrast}.kegg.out",
         err = "logs/{contrast}.kegg.err"
