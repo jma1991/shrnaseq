@@ -57,7 +57,6 @@ analysis=function(input, output, params, log) {
     #batch corrected
     mat=readRDS(input$rds[3])
     colnames(mat)= paste(x$samples$group, x$samples$Replicate, sep = " - " )
-    #matrix=hairpins_to_genes(mat,x)
     selY <- rownames(top2$table)[abs(top2$table$logFC)>params$FC]
     mat = subset(mat, rownames(mat) %in% selY)
     colors <- colorRampPalette( brewer.pal(9, "Blues") )(255)

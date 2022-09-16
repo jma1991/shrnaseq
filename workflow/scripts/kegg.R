@@ -11,14 +11,15 @@ analysis=function(input, output, params, log) {
     #Script
     library(limma)
     library(AnnotationDbi)
-    library(params$organism, lib.loc=params$pkg, character.only = TRUE)
+    library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
     org <- params$organism
     obj <- getFromNamespace(org, org)
     row.names(lrt) <- keys(obj)[1:nrow(lrt)]
-    keg = kegga(lrt, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2], coef=matrix[, params$contrast],  FDR=params$threshold)
+    keg = kegga(lrt, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2], 
+    coef=matrix[, params$contrast],  FDR=params$threshold)
  
     topkegg <- topKEGG(keg, sort="up")
 

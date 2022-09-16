@@ -22,11 +22,11 @@ hairpinBeforeBarcode: TRUE
 
 # specify contrasts
 contrast:
-  IBET.D4_vs_IBET.D8:
-  - IBET.D4-IBET.D8
+  IBET.D8_vs_IBET.D4:
+  - IBET.D8-IBET.D4
 
 # specify FDR threshold
-FDR: 0.85
+FDR: 0.05
 
 # specifiy fold change threshold
 FC: 2.5

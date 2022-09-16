@@ -14,10 +14,25 @@ rule filter_hairpins:
     script:
         "../scripts/filter_hairpins.R"
 
+rule norm:
+    input:
+        rds="results/filter_hairpins.rds"
+    output:
+        rds="results/norm.rds"
+    log:
+        out = "logs/norm.out",
+        err = "logs/norm.err"
+    message:
+        "Normalise counts"
+    conda:
+        "../envs/edger.yaml"
+    script:
+        "../scripts/norm.R"
+
         
 rule MDS_plot:
     input:
-        rds=["results/filter_hairpins.rds", "results/corrected_counts.rds"]
+        rds=["results/norm.rds", "results/corrected_counts.rds"]
     output:
         plot=["plots/MDS-plot.png", "plots/corrected-MDS-plot.png"]
     log:
@@ -32,7 +47,7 @@ rule MDS_plot:
 
 rule PCA_plot:
     input:
-        rds=["results/filter_hairpins.rds", "results/corrected_counts.rds"]
+        rds=["results/norm.rds", "results/corrected_counts.rds"]
     output:
         plot=["plots/PCA-plot.png", "plots/corrected-PCA-plot.png"]
     log:
@@ -47,7 +62,7 @@ rule PCA_plot:
 
 rule sample_dist_heatmap:
     input:
-        rds=["results/filter_hairpins.rds",  "results/corrected_counts.rds"]
+        rds=["results/norm.rds",  "results/corrected_counts.rds"]
     output:
         plot=["plots/sample-dist-heatmap.png", "plots/corrected-sample-dist-heatmap.png"]
     log:

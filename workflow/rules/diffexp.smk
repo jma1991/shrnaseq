@@ -15,7 +15,7 @@ rule corrected_counts:
 
 rule model_matrix:
     input:
-        rds="results/filter_hairpins.rds"
+        rds="results/norm.rds"
     output:
         rds="results/model_matrix.rds"
     log:
@@ -45,7 +45,7 @@ rule contrasts_matrix:
 
 rule estimateDisp:
     input:
-        rds=["results/filter_hairpins.rds", "results/model_matrix.rds"]
+        rds=["results/norm.rds", "results/model_matrix.rds"]
     output:
         rds="results/estimateDisp.rds"
     log:

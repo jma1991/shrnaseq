@@ -6,9 +6,9 @@ rule shiny:
         "results/contrasts_matrix.rds",
         "results/estimateDisp.rds",
         "results/{contrast}-glmLRT.rds",
-        "results/{contrast}-FDR_hairpins.rds",
         "results/{contrast}-goana.rds",
-        "results/{contrast}-kegg.rds"]
+        "results/{contrast}-kegg.rds"],
+        tsv="results/{contrast}-camera.tsv"
     output:
         rdata="results/{contrast}-shiny.RData"
     params:

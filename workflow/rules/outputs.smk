@@ -3,6 +3,8 @@ def get_final_output():
         directory(expand("resources/bioconductor/organism/lib/R/library/{organism}", organism = config["organism"])),
         "results/processAmplicons.rds",
         "plots/counts-index-hairpins.png",
+        "results/filter_hairpins.rds",
+        "results/norm.rds",
         "results/corrected_counts.rds",
         "plots/MDS-plot.png",
         "plots/corrected-MDS-plot.png",

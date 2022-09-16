@@ -54,6 +54,8 @@ rule plotSMEAR:
         rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_hairpins.rds"]
     output:
         plot="plots/{contrast}-plotSmear.png"
+    params:
+        FC=config["FC"]
     log:
         out = "logs/{contrast}-plotSmear.out",
         err = "logs/{contrast}-plotSmear.err"

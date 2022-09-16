@@ -11,7 +11,7 @@ analysis=function(input, output, params, log) {
     #Script
     library(limma)
     library(AnnotationDbi)
-    library(params$organism, lib.loc=params$pkg, character.only = TRUE)
+    library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
@@ -21,7 +21,8 @@ analysis=function(input, output, params, log) {
 
 
     row.names(lrt) <- keys(obj)[1:nrow(lrt)]
-    go <- goana(lrt, con=matrix[, params$contrast], FDR=params$threshold, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
+    go <- goana(lrt, con=matrix[, params$contrast], FDR=params$threshold, 
+    species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2])
   
     write.table(go, file = output$tsv, quote = FALSE, sep = '\t', col.names = NA)
     saveRDS(go,file=output$rds)
