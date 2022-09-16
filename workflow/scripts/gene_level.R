@@ -15,7 +15,6 @@ analysis=function(input, output, log) {
     # gene level
     dat=NULL
 
- 
     for (i in unique(lrt$genes$Gene)) {
 
         sel = lrt$genes$Gene == i & !is.na(lrt$genes$Gene)
@@ -25,6 +24,9 @@ analysis=function(input, output, log) {
         
         if (nhairpin==1) {
             logFC=lrt$table$logFC[which(sel)]
+            minFC=NA
+            maxFC=NA
+            IQRFC=NA
             if (logFC>0) {
                 dir="Up" 
             } else {
@@ -41,6 +43,9 @@ analysis=function(input, output, log) {
         if (nhairpin>1) {
             #calculate average logFC
             logFC=mean(lrt$table$logFC[which(sel)])
+            minFC= which.min(abs(lrt$table$logFC[which(sel)] - 0))
+            maxFC= which.max(abs(lrt$table$logFC[which(sel)] - 0))
+            IQRFC=IQR(lrt$table$logFC[which(sel)])
             if (logFC >0) {
                 dir="Up"
                 } else {
@@ -65,11 +70,12 @@ analysis=function(input, output, log) {
             stouffers=NA
             }
         }
-        vector=cbind(i,nhairpin, logFC, dir, dir_pval, stouffers)
+        vector=cbind(i,nhairpin, logFC, minFC, maxFC, IQRFC, dir, dir_pval, stouffers)
         dat=rbind(dat, vector)
     }
     dat=cbind(dat,p.adjust(dat[,"stouffers"], method="fdr"))
-    colnames(dat)=c("Gene", "Number of RNAs", "mean logFC", "Direction (mean logFC)", "Direction (smallest pvalue)", "Stouffer's p value", "Stouffer's FDR")
+    colnames(dat)=c("gene", "nguides", "mean.logFC", "min.logFC", "max.logFC", "iqr.logFC", "direction.mean.logFC",
+     "direction.smallest.pvalue", "stouffers.pvalue", "stouffers.FDR")
 
     write.table(dat, output$tsv, quote=F, row.names=F, sep=",")
     saveRDS(dat,file=output$rds)

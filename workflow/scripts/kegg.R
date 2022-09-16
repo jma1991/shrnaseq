@@ -10,7 +10,6 @@ analysis=function(input, output, params, log) {
 
     #Script
     library(limma)
-    library(AnnotationDbi)
     library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
