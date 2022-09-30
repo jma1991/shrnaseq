@@ -9,7 +9,6 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
-    library(limma)
     library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
@@ -17,6 +16,7 @@ analysis=function(input, output, params, log) {
     org <- params$organism
     obj <- getFromNamespace(org, org)
     row.names(lrt) <- keys(obj)[1:nrow(lrt)]
+    library(limma)
     keg = kegga(lrt, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2], 
     coef=matrix[, params$contrast],  FDR=params$threshold)
  
