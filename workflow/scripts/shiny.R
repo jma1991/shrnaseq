@@ -21,15 +21,17 @@ analysis=function(input, output, params, log) {
     assign(paste0(params$contrast, "_go"), go)
     kegg=readRDS(input$rds[8])
     assign(paste0(params$contrast, "_kegg"), kegg)
-    camera=read.table(input$tsv)
+    camera=read.table(input$tsv[1], header=T)
     assign(paste0(params$contrast, "_camera"), camera)
+    genelevel=read.table(input$tsv[2], header=T, sep=",")
+    assign(paste0(params$contrast, "_genelevel"), genelevel)
     
     list=ls()
-    list=list[! list %in% c("input", "output", "params", "log", "out", "err", "lrt", "go", "kegg", "camera")]
+    list=list[! list %in% c("input", "output", "params", "log", "out", "err", "lrt", "go", "kegg", "camera", "genelevel")]
 
     list=mget(list)
 
-    save(list, file = output$rdata)
+    saveRDS(list, file = output$rds)
 }
 
 

@@ -1,0 +1,120 @@
+---
+title: "shiny bugs #1"
+output: html_document
+date: "2022-09-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+library(DT)
+library(tidyverse)
+```
+### DT package
+#### - The DT package will allow me to add options data tables, including captions, how many entries are initially shown and linking selected rows to points in the plots on the same tab. 
+
+#### - The code below is used taken from the shiny app script to generate a DT datatable.
+
+```{r}
+
+gotable=function(list, string) {
+  obj <- get('list')[[paste0(string, "_go")]]
+  obj$GOID=rownames(obj)
+  obj
+
+}
+ui <- fluidPage(
+  fileInput('f1', 'Select workflow output', accept=c(".rds"), multiple=T),
+  DTOutput('gotable')
+)
+server <- function(input, output, session) {
+  list=reactive({
+    file <- input$f1
+    ext <- tools::file_ext(file$datapath)
+    
+    req(file)
+    validate(need(ext == "rds", "Please upload a rds file"))
+    
+    readRDS(file$datapath)
+  })
+  contrasts=reactive({
+    name=names(list())[which(str_detect(names(list()), "_lrt"))]
+    split=str_split(name, "_")
+    as.vector(sapply(split,"[[",1))
+  })
+  observe({
+    updateSelectInput(session,
+                      "contrast",
+                      choices = contrasts())
+  })
+  string=reactive({paste0(input$contrast)})
+  
+  output$gotable <- renderDT({
+    datatable(gotable(list(), string()))
+    })
+}
+```
+#### The following error is displayed where the table should be 
+```Error: unused argument (server = TRUE)```
+
+### 2. MDS plot
+#### Can't figure out how to make the MDS plot interactive
+
+### 3. Rmarkdown export
+#### The following code is used to generate an Rmarkdown document for the selected gene
+```{r}
+getgenes=function(list) {
+  genesymbollist = list()
+  genesymbols=as.character(list$x$genes$Gene)
+  unq = unique(genesymbols)
+  unq = unq[!is.na(unq)]
+  genes=NULL
+  for (i in unq) {
+    sel = genesymbols == i & !is.na(genesymbols)
+    if (sum(sel) > 1) 
+     genes=rbind(genes, i)
+  }
+  as.vector(genes)
+}
+ui=fluidPage(
+  fileInput('f1', 'Select workflow output', accept=c(".rds"), multiple=T),
+  selectInput("export_gene", "Select Gene", choices=""),
+  downloadButton("report", "Generate report")
+)
+server=function(input, output, session) {
+    list=reactive({
+    file <- input$f1
+    ext <- tools::file_ext(file$datapath)
+    
+    req(file)
+    validate(need(ext == "rds", "Please upload a rds file"))
+    
+    readRDS(file$datapath)
+  })
+  genes<-reactive({getgenes(list())})
+  observe({
+    updateSelectInput(session,
+                      "export_gene",
+                      choices = c(genes()))
+  })
+  exportgene=reactive({
+    paste0(input$export_gene)
+  })
+  output$report <- downloadHandler(
+    filename = "report.pdf",
+    content = function(file) {
+      #tempReport <-  file.path("report.Rmd")
+      #file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      params <- list(g = exportgene())
+      rmarkdown::render("~/report.Rmd", output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+}
+
+```
+
+#### The report is not produced and this error is produced in the console
+```Warning: Error in list: unused argument (n = exportgene())```

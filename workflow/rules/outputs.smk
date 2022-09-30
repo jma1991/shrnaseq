@@ -38,6 +38,6 @@ def get_final_output():
         output.append(f"results/{contrast}-kegg.tsv")
         output.append(f"results/{contrast}-kegg.rds")
         output.append(f"results/{contrast}-top_kegg.tsv")
-        output.append(f"results/{contrast}-shiny.RData")
+        output.append(f"results/{contrast}-shiny.rds")
 
     return output

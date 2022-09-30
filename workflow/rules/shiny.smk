@@ -8,9 +8,10 @@ rule shiny:
         "results/{contrast}-glmLRT.rds",
         "results/{contrast}-goana.rds",
         "results/{contrast}-kegg.rds"],
-        tsv="results/{contrast}-camera.tsv"
+        tsv=["results/{contrast}-camera.tsv",
+        "results/{contrast}-gene-level.tsv"]
     output:
-        rdata="results/{contrast}-shiny.RData"
+        rds="results/{contrast}-shiny.rds"
     params:
         contrast=get_contrast
     log:

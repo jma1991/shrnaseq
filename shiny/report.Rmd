@@ -1,0 +1,18 @@
+---
+title: "Report"
+output: html_document
+date: "2022-09-30"
+params:
+  g: "NA"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Gene report
+
+```{r, echo=FALSE}
+print(params$g)
+```
+
