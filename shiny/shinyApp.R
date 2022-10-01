@@ -50,17 +50,86 @@ bcv=function(list) {
   )
 }
 mds=function(list) {
-  colour=rainbow(length(unique(list$x$samples$group)))
-  plotMDS(list$x, labels=list$x$samples$group, col=colour,cex=0.8, main="MDS Plot")
-  legend(par("usr")[2], par("usr")[4],legend=c(unique(list$x$samples$group)), col=colour, pch=16, box.lwd = 0,box.col = "white",bg = "white")
   
+  list$x$samples$group=factor(list$x$samples$group, levels = c(unique(list$x$samples$group)))
+  
+  mat <- cpm(list$x$counts, log = TRUE, prior.count = 1)
+   
+  var <- matrixStats::rowVars(mat)
+   
+  num <- min(500, length(var))
+   
+  ind <- order(var, decreasing = TRUE)[seq_len(num)]
+   
+  dst <- dist(t(mat[ind, ]))
+  
+  mds <- cmdscale(as.matrix(dst))
+   
+  dat <- data.frame(
+     MD1 = mds[, 1], 
+     MD2 = mds[, 2], 
+     group = list$x$samples$group
+  )
+
+  if (length(unique(list$x$samples$group))<3) {
+    n=3 
+  } else {
+    n=length(unique(list$x$samples$group))
+  }
+  col=brewer.pal(n = n, name = "Paired")
+
+  ggplotly(
+    ggplot(dat, aes(MD1, MD2, colour = group)) + 
+      geom_point(size = 3) + 
+      labs(x = "MDS 1", y = "MDS 2", colour = "Group") + 
+      theme_bw() + 
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      labs(title="Multidimensional scaling") + 
+      theme(plot.title = element_text(hjust = 0.5)) + theme(legend.position="bottom") + 
+      scale_color_manual(values=col)
+  )
+
 }
 cor_mds=function(list) {
-  colour=rainbow(length(unique(list$x$samples$group)))
-  par(xpd = TRUE, mar = par()$mar + c(0, 0, 0, 5))
-  plotMDS(list$corrected, labels=list$x$samples$group, col=colour,cex=0.8, main="Batch corrected MDS Plot")
-  legend(par("usr")[2], par("usr")[4],legend=c(unique(list$x$samples$group)), 
-         col=colour, pch=16, box.lwd = 0 ,box.col = "white",bg = "white")
+  
+  list$x$samples$group=factor(list$x$samples$group, levels = c(unique(list$x$samples$group)))
+  
+  mat <- list$corrected
+  
+  var <- matrixStats::rowVars(mat)
+  
+  num <- min(500, length(var))
+  
+  ind <- order(var, decreasing = TRUE)[seq_len(num)]
+  
+  dst <- dist(t(mat[ind, ]))
+  
+  mds <- cmdscale(as.matrix(dst))
+  
+  dat <- data.frame(
+    MD1 = mds[, 1], 
+    MD2 = mds[, 2], 
+    group = list$x$samples$group
+  )
+  
+  if (length(unique(list$x$samples$group))<3) {
+    n=3 
+  } else {
+    n=length(unique(list$x$samples$group))
+  }
+  col=brewer.pal(n = n, name = "Paired")
+  
+  ggplotly(
+    ggplot(dat, aes(MD1, MD2, colour = group)) + 
+      geom_point(size = 3) + 
+      labs(x = "MDS 1", y = "MDS 2", colour = "Group") +
+      theme_bw() + 
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      labs(title="Batch corrected multidimensional scaling") + 
+      theme(plot.title = element_text(hjust = 0.5)) + theme(legend.position="bottom") + 
+      scale_color_manual(values=col)
+  )
+
 }
 pca=function(list) {
   list$x$samples$group=factor(list$x$samples$group, levels = c(unique(list$x$samples$group)))
@@ -415,8 +484,8 @@ ui <- fluidPage(
                                     ),
                            fluidRow(column(6,plotlyOutput('bcv'),style='padding:20px')
                                     ),
-                           fluidRow(column(6,plotOutput('mds'),style='padding:20px'),
-                                    column(6,plotOutput('correctedmds'),style='padding:20px')
+                           fluidRow(column(6,plotlyOutput('mds'),style='padding:20px'),
+                                    column(6,plotlyOutput('correctedmds'),style='padding:20px')
                                     ),
                            fluidRow(column(6,plotlyOutput('pca'),style='padding:20px'),
                                     column(6,plotlyOutput('correctedpca'),style='padding:20px')
@@ -512,10 +581,10 @@ server <- function(input, output, session) {
   output$bcv <- renderPlotly({
       bcv(list())
   })
-  output$mds <- renderPlot({
+  output$mds <- renderPlotly({
       mds(list())
   })
-  output$correctedmds <- renderPlot({
+  output$correctedmds <- renderPlotly({
       cor_mds(list())
   })
   output$pca <- renderPlotly({
