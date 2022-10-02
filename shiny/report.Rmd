@@ -1,18 +1,11 @@
 ---
-title: "Report"
+title: "Dynamic report"
 output: html_document
-date: "2022-09-30"
 params:
-  g: "NA"
+  gene: NA
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+# The `params` object is available in the document.
+params$gene
 ```
-
-## Gene report
-
-```{r, echo=FALSE}
-print(params$g)
-```
-
