@@ -9,7 +9,6 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
-    library(AnnotationDbi)
     library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])

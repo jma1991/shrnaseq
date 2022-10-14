@@ -1,4 +1,4 @@
-analysis=function(input, output, params, log) {
+analysis=function(input, output, log) {
     #Log 
     out <- file(log$out, open = "wt")
 
@@ -14,25 +14,14 @@ analysis=function(input, output, params, log) {
     des=readRDS(input$rds[3])
     matrix=readRDS(input$rds[4])
     xglm=readRDS(input$rds[5])
-    lrt=readRDS(input$rds[6])
-    assign(paste0(params$contrast, "_lrt"), lrt)
-
-    go=readRDS(input$rds[7])
-    assign(paste0(params$contrast, "_go"), go)
-    kegg=readRDS(input$rds[8])
-    assign(paste0(params$contrast, "_kegg"), kegg)
-    camera=read.table(input$tsv[1], header=T)
-    assign(paste0(params$contrast, "_camera"), camera)
-    genelevel=read.table(input$tsv[2], header=T, sep=",")
-    assign(paste0(params$contrast, "_genelevel"), genelevel)
     
-    list=ls()
-    list=list[! list %in% c("input", "output", "params", "log", "out", "err", "lrt", "go", "kegg", "camera", "genelevel")]
+    data=ls()
+    data=data[! data %in% c("input", "output", "params", "log", "out", "err")]
 
-    list=mget(list)
+    data=mget(data)
 
-    saveRDS(list, file = output$rds)
+    saveRDS(data, file = output$rds)
 }
 
 
-analysis(snakemake@input, snakemake@output, snakemake@params, snakemake@log)
+analysis(snakemake@input, snakemake@output, snakemake@log)

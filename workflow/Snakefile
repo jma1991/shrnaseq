@@ -4,10 +4,8 @@ configfile: "config/config.yaml"
 # Container image
 container: "docker://continuumio/miniconda3"
 
-# Resource rule
-include: "rules/resources.smk"
-
 # Workflow rules
+include: "rules/resources.smk"
 include: "rules/common.smk"
 include: "rules/outputs.smk"
 include: "rules/processing.smk"

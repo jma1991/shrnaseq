@@ -10,7 +10,6 @@ analysis= function(input, output, params, log) {
 
     #Script
     library(edgeR)
-    print(params$hairpinBeforeBarcode)
     x = processAmplicons(c(input$fastq), 
                         readfile2=params$readfile2,
                         barcodefile=input$index, 

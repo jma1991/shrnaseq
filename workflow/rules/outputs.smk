@@ -15,7 +15,8 @@ def get_final_output():
         "plots/corrected-PCA-plot.png",
         "plots/sample-dist-heatmap.png",
         "plots/corrected-sample-dist-heatmap.png",
-        "results/glmFit.rds"
+        "results/glmFit.rds",
+        "results/shiny.rds"
     ]
     contrasts = config["contrast"]
     for contrast in contrasts:

@@ -11,7 +11,9 @@ hairpins: config/GSE139118_Pool1revcompshRNA.tsv
 fastq: [config/IBET.D4.R1_subset.fastq,
         config/IBET.D4.R2_subset.fastq,
         config/IBET.D8.R1_subset.fastq,
-        config/IBET.D8.R2_subset.fastq
+        config/IBET.D8.R2_subset.fastq,
+        config/IBET.D14.R1_subset.fastq,
+        config/IBET.D14.R2_subset.fastq
         ]
 
 #one or more fastq filenames for reverse read 
@@ -24,9 +26,11 @@ hairpinBeforeBarcode: TRUE
 contrast:
   IBET.D8_vs_IBET.D4:
   - IBET.D8-IBET.D4
+  IBET.D14_vs_IBET.D4:
+  - IBET.D14-IBET.D4
 
 # specify FDR threshold
-FDR: 0.05
+FDR: 0.85
 
 # specifiy fold change threshold
-FC: 2.5
+FC: 5

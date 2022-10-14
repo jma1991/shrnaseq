@@ -9,7 +9,6 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
-    library(AnnotationDbi)
     library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
@@ -21,8 +20,6 @@ analysis=function(input, output, params, log) {
     keg = kegga(lrt, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2], 
     coef=matrix[, params$contrast],  FDR=params$threshold)
  
-    topkegg <- topKEGG(keg, sort="up")
-
     write.table(keg, file = output$tsv, quote = FALSE, sep = '\t', col.names = NA)
     saveRDS(keg,file=output$rds)
 }

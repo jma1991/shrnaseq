@@ -1,5 +1,5 @@
 ---
-title: "Dynamic report"
+title: "Report"
 output: 
   html_document: 
     bootswatch: minty
@@ -7,13 +7,21 @@ output:
         google: "Roboto"
 params:
   gene: "NA"
-  contrast: "NA"
   data: "NA"
+  contrast_data: "NA"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
+
 ---
-title: "Dynamic report for `r params$gene`"
+title: "Report for `r params$gene`"
 ---
- 
+
+
+<br> 
+<br>
+
 ```{r, echo=FALSE, results=FALSE, message=FALSE}
 
 packages <- c("ggplot2", "RColorBrewer", "heatmaply","reshape", "edgeR", "knitr", "tidyverse", "kableExtra")
@@ -24,84 +32,144 @@ if (any(installed_packages == FALSE)) {
 
 #### Packages loading ####
 invisible(lapply(packages, library, character.only = TRUE))
-
+gene=params$gene
 data=params$data
+contrast_data=params$contrast_data
 ```
 
-```{r, echo=FALSE, message=FALSE}
+### Differential expression
+
+
+<br> 
+<br>
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
 mat <- cpm(data$x$counts, log=TRUE, prior.count = 1)
 colnames(mat) <- paste(data$x$samples$group, data$x$samples$Replicate, sep = " - " )
-pos=which(grepl(params$gene, rownames(mat)))
+pos=which(grepl(gene, rownames(mat)))
 mat = mat[c(pos),]
-getPalette = colorRampPalette(brewer.pal(9, "Blues"))
-heatmaply(mat, col=getPalette, main="Differential expression" )
+getPalette = colorRampPalette(brewer.pal(9, "BuGn"))
+heatmaply(mat, col=getPalette, main="Differential expression (logCPM)" )
 ```
 
-```{r, echo=FALSE, message=FALSE}
+##### Figure 1. Differential expression of the guide RNAs for `r gene` across the contrasts of interest. Shown in logarithm of counts per million reads, without batch correction.
+
+
+
+<br> 
+<br> 
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
 colnames(data$corrected)= paste(data$x$samples$group, data$x$samples$Replicate, sep = " - " )
-pos=which(grepl(params$gene, rownames(data$corrected)))
+pos=which(grepl(gene, rownames(data$corrected)))
 corrected = data$corrected[c(pos),]
-getPalette = colorRampPalette(brewer.pal(9, "Blues"))
-heatmaply(corrected, col=getPalette, main="Batch corrected differential expression")
+getPalette = colorRampPalette(brewer.pal(9, "BuGn"))
+heatmaply(corrected, col=getPalette, main="Batch corrected differential expression (logCPM)")
 ```
 
-```{r, echo=FALSE, message=FALSE}
+##### Figure 2. Differential expression of the guide RNAs for `r gene` across the contrasts of interest. Shown in logarithm of counts per million reads, corrected for batch
+
+
+<br> 
+<br>
+
+##### Table 1. Differential expression of the guide RNAs for `r gene` in logarithm of counts per million reads
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
 mat <- cpm(data$x$counts, log=TRUE, prior.count = 1)
-pos=which(grepl(params$gene, rownames(mat)))
+pos=which(grepl(gene, rownames(mat)))
 mat = data.frame(mat[c(pos),])
+mat$Guide=rownames(mat)
 mat$Batch=c("Uncorrected")
 
-pos=which(grepl(params$gene, rownames(data$corrected)))
+pos=which(grepl(gene, rownames(data$corrected)))
 cor_mat = data.frame(data$corrected[c(pos),])
+cor_mat$Guide=rownames(mat)
 cor_mat$Batch=c("Corrected")
 colnames(cor_mat)=colnames(mat)
 
+rownames(mat)=c()
+rownames(cor_mat)=c()
 rbind(mat,cor_mat) %>%
   kbl(caption="Differential expression logCPM") %>%
-  kable_minimal()
+  kable_classic(
+    font_size=15, 
+    html_font = "Helvetica"
+  )
 ```
 
-```{r, echo=FALSE, message=FALSE}
-name=names(data)[which(str_detect(names(data), "_lrt"))]
+
+
+<br> 
+<br>
+<br>
+
+### Gene level
+
+##### Table 2. Competitive Gene Set Test for `r gene`
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
+name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
 split=str_split(name, "_")
 dat=NULL
 for (i in as.vector(sapply(split,"[[",1))) {
-  obj <- get('data')[[paste0(i, "_camera")]]
+  obj <- get('contrast_data')[[paste0(i, "_camera")]]
   colnames(obj)=c("nGuides", "Direction", "Pvalue", "FDR", "Gene")
   obj$Contrast=paste(i)
   dat=rbind(dat,obj)
 }
 dat=dat[,c(6,5,1,2,3,4)]
+dat=dat[dat$Gene==gene,] 
+row.names(dat)=c()
 rownames(dat)=c()
-dat[dat$Gene==params$gene,] %>% 
+dat %>% 
   kbl(caption="Camera") %>%
-  kable_minimal()
+  kable_classic(
+        font_size=15, 
+    html_font = "Helvetica"
+  )
 ```
 
-```{r, echo=FALSE, message=FALSE}
-name=names(data)[which(str_detect(names(data), "_lrt"))]
+
+
+<br> 
+<br>
+
+##### Table 3. Gene level information `r gene`
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
+name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
 split=str_split(name, "_")
 dat=NULL
 for (i in as.vector(sapply(split,"[[",1))) {
-  obj <- get('data')[[paste0(i, "_genelevel")]]
+  obj <- get('contrast_data')[[paste0(i, "_genelevel")]]
   obj$contrast=paste(i)
   dat=rbind(dat,obj)
 }
 colnames(dat)=c("Gene", "nGuides", 	"Mean logFC", "IQR logFC", "Direction mean logFC",	"Direction smallest Pvalue", "Stouffer's Pvalue",	"Stouffer's FDR", 	"Contrast")
 dat=dat[,c(9,1:8)]
+dat=dat[dat$Gene==gene,]
+row.names(dat)=c()
 rownames(dat)=c()
-dat[dat$Gene==params$gene,] %>% 
+dat %>% 
   kbl(caption="Gene level") %>%
-  kable_minimal() 
+  kable_classic(
+    font_size=15, 
+    html_font = "Helvetica"
+  ) 
 ```
 
-```{r, echo=FALSE, message=FALSE}
-name=names(data)[which(str_detect(names(data), "_lrt"))]
+
+
+<br> 
+<br>
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, out.width="100%"}
+name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
 split=str_split(name, "_")
 
 for (i in as.vector(sapply(split,"[[",1))) {
   
-  obj <- get('data')[[paste0(i, "_lrt")]]
+  obj <- get('contrast_data')[[paste0(i, "_lrt")]]
   genesymbollist = list()
   genesymbols=as.character(data$x$genes$Gene)
   unq = unique(genesymbols)
@@ -112,54 +180,77 @@ for (i in as.vector(sapply(split,"[[",1))) {
     if (sum(sel) > 1) 
       genesymbollist[[g]] =which(sel)
   }
-  barcodeplot(obj$table$logFC,index=genesymbollist[[params$gene]], main=paste0("Barcodeplot for ", params$contrast),
+  barcodeplot(obj$table$logFC,index=genesymbollist[[gene]], main=paste0("Barcodeplot for ", i),
               labels=c("Negative logFC", "Positive logFC"),
               quantile=c(-0.5,0.5))
     
 }
 ```
 
-```{r, echo=FALSE, message=FALSE}
-name=names(data)[which(str_detect(names(data), "_lrt"))]
-split=str_split(name, "_")
-compare=NULL
-for (i in as.vector(sapply(split,"[[",1))) {
-  obj <- get('data')[[paste0(i, "_lrt")]]
-  compare=cbind(compare,obj$table$logFC)
-}
+##### Figure 3. Enrichment across guide RNAs of `r gene`. Each vertical line across the plot is a guide RNA.
 
-colnames(compare)=as.vector(sapply(split,"[[",1))
-rownames(compare)=rownames(obj)
-res=compare[which(str_detect(rownames(compare), params$gene)),]
-d=melt(t(res), id.vars=colnames(res))
-ggplotly(
-  d %>% ggplot(aes(x=X1, y=value, fill=X1)) +
-    geom_boxplot(outlier.shape = NA) +
-    geom_jitter(aes(colour = X2)) +
-    theme_bw() +
-    xlab("") +
-    guides(fill = "none") +
-    ggtitle(paste(params$gene)) +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    scale_colour_discrete(name  ="Hairpin") +
-    scale_y_continuous(name ="logFC") +
-    scale_x_discrete(name ="Contrast")
-  )
-```
 
-```{r, echo=FALSE, message=FALSE}
-name=names(data)[which(str_detect(names(data), "_lrt"))]
+<br> 
+<br> 
+<br>
+
+### Comparing contrasts
+
+##### Table 4. Mean log fold-change for the guide RNAs of `r gene`
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
+name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
 split=str_split(name, "_")
 vector=NULL
 for (i in as.vector(sapply(split,"[[",1))) {
-  obj <- get('data')[[paste0(i, "_lrt")]]
-  df=obj$table[which(str_detect(rownames(obj$table),  params$gene)),]
+  obj <- get('contrast_data')[[paste0(i, "_lrt")]]
+  df=obj$table[which(str_detect(rownames(obj$table), gene)),]
   vector=cbind(vector,mean(df$logFC))
 }
-vector=data.frame(cbind(params$gene, vector))
+vector=data.frame(cbind(gene, vector))
 
 colnames(vector)=c("Gene", as.vector(sapply(split,"[[",1)))
 vector %>% 
   kbl(caption="Mean logFC across contrasts") %>%
-  kable_minimal()
+  kable_classic(
+    font_size=15, 
+    html_font = "Helvetica")
 ```
+
+
+
+<br> 
+<br>
+
+```{r, echo=FALSE, message=FALSE, out.width="100%"}
+name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
+split=str_split(name, "_")
+contrasts=as.vector(sapply(split,"[[",1))
+compare=NULL
+for (i in contrasts) {
+  obj <- get('contrast_data')[[paste0(i, "_lrt")]]
+  compare=data.frame(cbind(compare,obj$table$logFC))
+}
+colnames(compare)=contrasts
+compare$Guides=rownames(obj$table)
+res=data.frame(compare[which(str_detect(compare$Guides, gene)),])
+d=melt(res)
+colnames(d)=c("Guides","Contrast","logFC")
+
+ggplotly(
+  d %>% ggplot(aes(x=Contrast, y=logFC)) +
+    theme_bw() +
+    ggtitle(paste(gene)) +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    geom_boxplot(outlier.shape = NA, fill="#caebd8", show.legend=FALSE) +
+    geom_jitter(aes(colour = Guides), show.legend = TRUE) +
+    theme(legend.position="none")
+  )
+```
+
+##### Figure 4. Boxplot comparing the guide RNAs for `r gene` across the contrasts of interest.
+
+
+<br> 
+<br>
+
