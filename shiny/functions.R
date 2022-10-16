@@ -249,22 +249,81 @@ camerarank <- function(contrast_data, inputcontrast, s) {
   obj <- get('contrast_data')[[paste0(inputcontrast, "_camera")]]
   colnames(obj) <- c("nGuides", "Direction", "Pvalue", "FDR", "Gene")
   
-  obj$Rank <- rank(-log(obj$Pvalue))
-  ggplotly(
-    ggplot(obj, aes(x=Rank, y=(-log(Pvalue)), label=Gene)) +
-      geom_point(aes(size=nGuides), color="#b8dbcc") +
-      geom_point(aes(size=nGuides), color = "red",
-                 data = obj %>% filter(obj$Pvalue<0.05 & obj$Direction=="Up")) +
-      geom_point(aes(size=nGuides), color = "cornflowerblue",
-                 data = obj %>% filter(obj$Pvalue<0.05 & obj$Direction=="Down")) +
-      theme_classic() +
-      labs(title="Camera rank plot", y="-log(P Value)") +
-      theme(plot.title = element_text(hjust = 0.5)) +
-      {if (length(s)) geom_point(aes(size=nGuides), data = obj[s,], shape=1) } +
-      {if (length(s)) geom_text(data = obj[s,], check_overlap = TRUE, hjust = 0, nudge_x = (max(obj$Rank))*0.05, size=3)} 
-    , height = 600
-  ) 
+  # obj$Rank <- rank(-log(obj$Pvalue))
+  # ggplotly(
+  #   ggplot(obj, aes(x=Rank, y=(-log(Pvalue)), label=Gene)) +
+  #     geom_point(aes(size=nGuides), color="#b8dbcc") +
+  #     geom_point(aes(size=nGuides), color = "red",
+  #                data = obj %>% filter(obj$Pvalue<0.05 & obj$Direction=="Up")) +
+  #     geom_point(aes(size=nGuides), color = "cornflowerblue",
+  #                data = obj %>% filter(obj$Pvalue<0.05 & obj$Direction=="Down")) +
+  #     theme_classic() +
+  #     labs(title="Camera rank plot", y="-log(P Value)") +
+  #     theme(plot.title = element_text(hjust = 0.5)) +
+  #     {if (length(s)) geom_point(aes(size=nGuides), data = obj[s,], shape=1) } +
+  #     {if (length(s)) geom_text(data = obj[s,], check_overlap = TRUE, hjust = 0, nudge_x = (max(obj$Rank))*0.05, size=3)} 
+  #   , height = 600
+  # ) 
+
+  res <- as.data.frame(obj)
+  
+  fdr <- 0.6
+
+  res$Status <- factor("NS", levels = c("Up", "NS", "Down"))
+  
+  res$Status[res$Direction == "Up" & res$FDR < fdr] <- "Up"
+  
+  res$Status[res$Direction == "Down" & res$FDR < fdr] <- "Down"
+    
+  res$Pvalue <- -log10(res$Pvalue)
+  
+  res$Rank <- rank(res$Pvalue)
+  
+  col <- c(
+    "Up"   = "#FF0000",
+    "NS"   = "#B8DBCC",
+    "Down" = "#6495ED"
+  )
+
+  res.s <- res[s, , drop = FALSE]
+  
+  plt <- ggplot(res, aes(x = Rank, y = Pvalue, colour = Status, size = nGuides, label = Gene)) + 
+    geom_point() + 
+    geom_point(data = res.s, shape = 1) + 
+    geom_text(data = res.s, hjust = 0, nudge_x = 10) +  
+    scale_colour_manual(values = col, breaks = names(col)) + 
+    labs(
+      title = "Camera rank plot",
+      x = "Rank",
+      y = "-log10(Pvalue)",
+      colour = "Status"
+    ) + 
+    guides(size = "none") +
+    theme_classic() + 
+    theme(plot.title = element_text(hjust = 0.5))
+
+  plt <- ggplotly(plt, height = 600)
+
+  lab <- c(
+    "Up"   = sprintf("Up (%s)", comma(sum(res$Status == "Up"))),
+    "NS"   = sprintf("NS (%s)", comma(sum(res$Status == "NS"))),
+    "Down" = sprintf("Down (%s)", comma(sum(res$Status == "Down")))
+  )
+  
+  plt$x$layout$legend$title$text <- "Status"
+  
+  plt$x$data[[1]]$name <- lab["Up"]
+
+  plt$x$data[[2]]$name <- lab["NS"]
+  
+  plt$x$data[[3]]$name <- lab["Down"]
+  
+  plt <- layout(p = plt, legend = list(itemsizing = "constant"))
+  
+  plt
+
 }
+
 genelevel <- function(contrast_data, inputcontrast) {
   obj <- get('contrast_data')[[paste0(inputcontrast, "_genelevel")]]
   colnames(obj) <- c("Gene", "nGuides", 	"Mean logFC", "IQR logFC",
