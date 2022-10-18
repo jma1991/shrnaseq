@@ -30,8 +30,12 @@ if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
 }
 
+
 #### Packages loading ####
 invisible(lapply(packages, library, character.only = TRUE))
+
+theme_set(theme_classic())
+
 gene=params$gene
 data=params$data
 contrast_data=params$contrast_data
@@ -158,8 +162,6 @@ dat %>%
   ) 
 ```
 
-
-
 <br> 
 <br>
 
@@ -177,7 +179,6 @@ for (i in as.vector(sapply(split,"[[",1))) {
     
   for (g in unq) {
     sel = genesymbols == g & !is.na(genesymbols)
-    if (sum(sel) > 1) 
       genesymbollist[[g]] =which(sel)
   }
   barcodeplot(obj$table$logFC,index=genesymbollist[[gene]], main=paste0("Barcodeplot for ", i),
@@ -223,29 +224,57 @@ vector %>%
 <br>
 
 ```{r, echo=FALSE, message=FALSE, out.width="100%"}
-name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
-split=str_split(name, "_")
-contrasts=as.vector(sapply(split,"[[",1))
-compare=NULL
+name <- names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
+split <- str_split(name, "_")
+contrasts <- as.vector(sapply(split,"[[",1))
+compareFC <- NULL
+comparepval <- NULL
 for (i in contrasts) {
+  obj <- get('contrast_data')[[paste0(i, "_genelevel")]]
+  colnames(obj) <- c("Gene", "nGuides", 	"Mean logFC", "IQR logFC",
+                     "Direction mean logFC",	"Direction smallest Pvalue",
+                     "Stouffer's Pvalue",	"Stouffer's FDR")
+  obj <- obj[obj$Gene==gene,]
+  comparepval <- data.frame(rbind(comparepval, obj$`Stouffer's FDR`))
   obj <- get('contrast_data')[[paste0(i, "_lrt")]]
-  compare=data.frame(cbind(compare,obj$table$logFC))
+  compareFC <- data.frame(cbind(compareFC,obj$table$logFC))
 }
-colnames(compare)=contrasts
-compare$Guides=rownames(obj$table)
-res=data.frame(compare[which(str_detect(compare$Guides, gene)),])
-d=melt(res)
-colnames(d)=c("Guides","Contrast","logFC")
+
+colnames(compareFC) <- contrasts
+compareFC$Guides <- rownames(obj$table)
+sel=which(str_detect(compareFC$Guides,  (paste0(gene, "\\."))))
+res <- data.frame(compareFC[sel,])
+d <- melt(res)
+colnames(d) <- c("Guides","Contrast","logFC")
+
+comparepval$Contrast <- unique(d$Contrast)
+comparepval$yloc <- max(d$logFC)+0.5 
+comparepval$fdr <- comparepval[,1]
+comparepval$label=c("")
+for (i in 1:nrow(comparepval)) {
+  if (is.na(comparepval[i, "fdr"])) {next}
+  if (comparepval[i,"fdr"]<0.05) {
+    comparepval[i,"label"]="*"
+  } 
+  if (comparepval[i,"fdr"]<0.01) {
+    comparepval[i,"label"]="**"
+  }
+  if (comparepval[i,"fdr"]<0.001) {
+    comparepval[i,"label"]="***"
+  }
+  }
+
 
 ggplotly(
-  d %>% ggplot(aes(x=Contrast, y=logFC)) +
-    theme_bw() +
-    ggtitle(paste(gene)) +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    geom_boxplot(outlier.shape = NA, fill="#caebd8", show.legend=FALSE) +
+  ggplot(d, aes(x=Contrast, y=logFC)) +
+    geom_boxplot(outlier.shape = NA, fill="#b8dbcc", show.legend=FALSE) +
     geom_jitter(aes(colour = Guides), show.legend = TRUE) +
-    theme(legend.position="none")
-  )
+    geom_hline(yintercept=0, linetype="dashed", color = "gray") +
+    geom_text(data = comparepval, aes(x=Contrast, y = yloc, label =label), vjust=-0.3) +
+    ggtitle(paste(gene)) +
+    theme(plot.title = element_text(hjust = 0.5))
+)
+
 ```
 
 ##### Figure 4. Boxplot comparing the guide RNAs for `r gene` across the contrasts of interest.
