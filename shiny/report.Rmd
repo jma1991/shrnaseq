@@ -18,8 +18,6 @@ editor_options:
 title: "Report for `r params$gene`"
 ---
 
-
-<br> 
 <br>
 
 ```{r, echo=FALSE, results=FALSE, message=FALSE}
@@ -43,8 +41,7 @@ contrast_data=params$contrast_data
 
 ### Differential expression
 
-
-<br> 
+ 
 <br>
 
 ```{r, echo=FALSE, message=FALSE, out.width="100%"}
@@ -53,7 +50,7 @@ colnames(mat) <- paste(data$x$samples$group, data$x$samples$Replicate, sep = " -
 pos=which(grepl(gene, rownames(mat)))
 mat = mat[c(pos),]
 getPalette = colorRampPalette(brewer.pal(9, "BuGn"))
-heatmaply(mat, col=getPalette, main="Differential expression (logCPM)" )
+heatmaply(mat, col=getPalette)
 ```
 
 ##### Figure 1. Differential expression of the guide RNAs for `r gene` across the contrasts of interest. Shown in logarithm of counts per million reads, without batch correction.
@@ -61,20 +58,23 @@ heatmaply(mat, col=getPalette, main="Differential expression (logCPM)" )
 
 
 <br> 
-<br> 
+
+---
+
 ```{r, echo=FALSE, message=FALSE, out.width="100%"}
 colnames(data$corrected)= paste(data$x$samples$group, data$x$samples$Replicate, sep = " - " )
 pos=which(grepl(gene, rownames(data$corrected)))
 corrected = data$corrected[c(pos),]
 getPalette = colorRampPalette(brewer.pal(9, "BuGn"))
-heatmaply(corrected, col=getPalette, main="Batch corrected differential expression (logCPM)")
+heatmaply(corrected, col=getPalette)
 ```
 
 ##### Figure 2. Differential expression of the guide RNAs for `r gene` across the contrasts of interest. Shown in logarithm of counts per million reads, corrected for batch
 
 
 <br> 
-<br>
+
+---
 
 ##### Table 1. Differential expression of the guide RNAs for `r gene` in logarithm of counts per million reads
 
@@ -94,7 +94,7 @@ colnames(cor_mat)=colnames(mat)
 rownames(mat)=c()
 rownames(cor_mat)=c()
 rbind(mat,cor_mat) %>%
-  kbl(caption="Differential expression logCPM") %>%
+  kbl() %>%
   kable_classic(
     font_size=15, 
     html_font = "Helvetica"
@@ -104,8 +104,9 @@ rbind(mat,cor_mat) %>%
 
 
 <br> 
-<br>
-<br>
+
+---
+
 
 ### Gene level
 
@@ -136,7 +137,9 @@ dat %>%
 
 
 <br> 
-<br>
+
+---
+
 
 ##### Table 3. Gene level information `r gene`
 
@@ -155,7 +158,7 @@ dat=dat[dat$Gene==gene,]
 row.names(dat)=c()
 rownames(dat)=c()
 dat %>% 
-  kbl(caption="Gene level") %>%
+  kbl() %>%
   kable_classic(
     font_size=15, 
     html_font = "Helvetica"
@@ -163,7 +166,9 @@ dat %>%
 ```
 
 <br> 
-<br>
+
+---
+
 
 ```{r, echo=FALSE, message=FALSE, fig.width=10, out.width="100%"}
 name=names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
@@ -181,7 +186,7 @@ for (i in as.vector(sapply(split,"[[",1))) {
     sel = genesymbols == g & !is.na(genesymbols)
       genesymbollist[[g]] =which(sel)
   }
-  barcodeplot(obj$table$logFC,index=genesymbollist[[gene]], main=paste0("Barcodeplot for ", i),
+  barcodeplot(obj$table$logFC,index=genesymbollist[[gene]],
               labels=c("Negative logFC", "Positive logFC"),
               quantile=c(-0.5,0.5))
     
@@ -192,8 +197,9 @@ for (i in as.vector(sapply(split,"[[",1))) {
 
 
 <br> 
-<br> 
-<br>
+
+---
+
 
 ### Comparing contrasts
 
@@ -212,7 +218,7 @@ vector=data.frame(cbind(gene, vector))
 
 colnames(vector)=c("Gene", as.vector(sapply(split,"[[",1)))
 vector %>% 
-  kbl(caption="Mean logFC across contrasts") %>%
+  kbl() %>%
   kable_classic(
     font_size=15, 
     html_font = "Helvetica")
@@ -220,8 +226,10 @@ vector %>%
 
 
 
-<br> 
 <br>
+
+---
+
 
 ```{r, echo=FALSE, message=FALSE, out.width="100%"}
 name <- names(contrast_data)[which(str_detect(names(contrast_data), "_lrt"))]
@@ -260,7 +268,7 @@ for (i in 1:nrow(comparepval)) {
     comparepval[i,"label"]="**"
   }
   if (comparepval[i,"fdr"]<0.001) {
-    comparepval[i,"label"]="***"
+    comparepval[i,"label"]="---"
   }
   }
 
@@ -270,9 +278,7 @@ ggplotly(
     geom_boxplot(outlier.shape = NA, fill="#b8dbcc", show.legend=FALSE) +
     geom_jitter(aes(colour = Guides), show.legend = TRUE) +
     geom_hline(yintercept=0, linetype="dashed", color = "gray") +
-    geom_text(data = comparepval, aes(x=Contrast, y = yloc, label =label), vjust=-0.3) +
-    ggtitle(paste(gene)) +
-    theme(plot.title = element_text(hjust = 0.5))
+    geom_text(data = comparepval, aes(x=Contrast, y = yloc, label =label), vjust=-0.3) 
 )
 
 ```
@@ -281,5 +287,3 @@ ggplotly(
 
 
 <br> 
-<br>
-
