@@ -1,0 +1,13 @@
+name: shRNAseq
+schemaVersion: 1
+workflows:
+  shRNAseq:
+    type:
+      language: snakemake
+      version: 1.0
+    sourceURL: https://github.com/zifornd/shrnaseq.git 
+contexts:
+    ctx1:
+        engines:
+            - type: snakemake
+              engine: snakemake
