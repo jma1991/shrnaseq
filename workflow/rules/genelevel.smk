@@ -14,7 +14,7 @@ rule camera:
     message:
         "Gene Set Test"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/camera.R"
  
@@ -30,7 +30,7 @@ rule gene_level:
     message:
         "Gene level analysis"
     conda:
-        "../envs/gene_level.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/gene_level.R"
 

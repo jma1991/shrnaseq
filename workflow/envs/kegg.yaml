@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-dependencies:
-  - bioconductor-edger
-  - bioconductor-limma
-  - bioconductor-annotationdbi
-  - bioconductor-go.db

@@ -1,8 +1,8 @@
 
-rule expression_heatmap:
+rule expression_heatmap: 
     input:
         rds=["results/{contrast}-glmLRT.rds", 
-        "results/filter_hairpins.rds", 
+        "results/filter_guideRNAs.rds", 
         "results/corrected_counts.rds"]
     output:
         plot=["plots/{contrast}-expression-heatmap.png",
@@ -15,7 +15,7 @@ rule expression_heatmap:
     message:
         "Visualise differential expression across groups"
     conda:
-        "../envs/heatmap.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/expression_heatmap.R"
 
@@ -30,28 +30,28 @@ rule volcano_plot:
     message:
         "Generate volcano plot to visualise relationship between magnitude and strength of evidence"
     conda:
-        "../envs/edger.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/volcano_plot.R"
    
-rule hairpin_histogram:
+rule guideRNA_histogram:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:
-        plot="plots/{contrast}-hairpin-histogram.png"
+        plot="plots/{contrast}-guideRNA-histogram.png"
     log:
-        out = "logs/{contrast}-hairpin-histogram.out",
-        err = "logs/{contrast}-hairpin-histogram.err"
+        out = "logs/{contrast}-guideRNA-histogram.out",
+        err = "logs/{contrast}-guideRNA-histogram.err"
     message:
-        "Visualise distribution of hairpin p values"
+        "Visualise distribution of guideRNA p values"
     conda:
-        "../envs/edger.yaml"
+        "../envs/plots.yaml"
     script:
-        "../scripts/hairpin_histogram.R"
+        "../scripts/guideRNA_histogram.R"
 
 rule plotSMEAR:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_hairpins.rds"]
+        rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_guideRNAs.rds"]
     output:
         plot="plots/{contrast}-plotSmear.png"
     params:
@@ -60,8 +60,8 @@ rule plotSMEAR:
         out = "logs/{contrast}-plotSmear.out",
         err = "logs/{contrast}-plotSmear.err"
     message:
-        "Visualise logFC against logCPM with top FDR hairpins highlighted"
+        "Visualise logFC against logCPM with top FDR guideRNAs highlighted"
     conda:
-        "../envs/edger.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/plotSMEAR.R"       

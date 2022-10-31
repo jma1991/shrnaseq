@@ -6,3 +6,7 @@ dependencies:
   - bioconductor-edger
   - bioconductor-deseq2
   - bioconductor-deformats
+  - r-pheatmap
+  - r-rcolorbrewer
+  - r-ggplot2
+  - r-matrixstats

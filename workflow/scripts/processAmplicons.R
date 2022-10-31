@@ -13,7 +13,7 @@ analysis= function(input, output, params, log) {
     x = processAmplicons(c(input$fastq), 
                         readfile2=params$readfile2,
                         barcodefile=input$index, 
-                        hairpinfile=input$hairpin, 
+                        hairpinfile=input$guideRNA, 
                         verbose=TRUE,
                         hairpinBeforeBarcode=params$hairpinBeforeBarcode
                         )

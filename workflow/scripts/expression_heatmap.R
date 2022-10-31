@@ -1,28 +1,3 @@
-hairpins_to_genes=function(mat,x){
-
-  hairpinlist=list()
-  unq = unique(x$genes$Gene)
-  unq = unq[!is.na(unq)]
-  
-  for (i in unq) {
-    sel = x$genes$Gene == i & !is.na(x$genes$Gene)
-    hairpinlist[[i]] = x$genes$ID[c(which(sel))]
-  }
-  
-  vector=vector()
-  mat2=vector()
-  for (i in 1:ncol(mat)) {
-    for (i2 in hairpinlist) {
-      vector=rbind(vector,mean(mat[c(i2),i]))
-    }
-    mat2=cbind(mat2, vector)
-    vector=NULL
-  }
-  rownames(mat2)=unique(x$genes$Gene)
-  colnames(mat2)=colnames(mat)
-  return(mat2)
-}
-
 analysis=function(input, output, params, log) {
     
     #Log 

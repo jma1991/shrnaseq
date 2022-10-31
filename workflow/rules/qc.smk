@@ -1,22 +1,22 @@
-rule filter_hairpins:
+rule filter_guideRNAs:
     input:
         rds="results/processAmplicons.rds"
     output:
-        rds="results/filter_hairpins.rds",
-        plot="plots/counts-index-hairpins.png"
+        rds="results/filter_guideRNAs.rds",
+        plot="plots/counts-index-guideRNAs.png"
     log:
-        out = "logs/filter_hairpins.out",
-        err = "logs/filter_hairpins.err"
+        out = "logs/filter_guideRNAs.out",
+        err = "logs/filter_guideRNAs.err"
     message:
-        "Filter hairpins with counts of > 0.5 counts per million in at least 3 samples, and plots of counts per index and hairpins"
+        "Filter guideRNAs with counts of > 0.5 counts per million in at least 3 samples, and plots of counts per index and guideRNAs"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
-        "../scripts/filter_hairpins.R"
+        "../scripts/filter_guideRNAs.R"
 
 rule norm:
     input:
-        rds="results/filter_hairpins.rds"
+        rds="results/filter_guideRNAs.rds"
     output:
         rds="results/norm.rds"
     log:
@@ -25,7 +25,7 @@ rule norm:
     message:
         "Normalise counts"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/norm.R"
 
@@ -41,7 +41,7 @@ rule MDS_plot:
     message:
         "Multidimensional Scaling plot to visualise relationship between samples"
     conda:
-        "../envs/heatmap.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/MDS_plot.R"
 
@@ -56,7 +56,7 @@ rule PCA_plot:
     message:
         "Visualise relationships between first 2 principal components"
     conda:
-        "../envs/pca.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/PCA_plot.R"
 
@@ -71,7 +71,7 @@ rule sample_dist_heatmap:
     message:
         "Heatmap of sample distances"
     conda:
-        "../envs/heatmap.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/sample_dist_heatmap.R"
     
@@ -86,6 +86,6 @@ rule BVC_plot:
     message:
         "Visualise Biological Coefficient of Variation against read abundance"
     conda:
-        "../envs/edger.yaml"
+        "../envs/plots.yaml"
     script:
         "../scripts/BVC_plot.R" 

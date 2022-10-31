@@ -6,16 +6,19 @@ Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using ed
 
 ## Table of Contents
 
-* [Overview](#overview)
+* [Overview](#Overview)
 * [Installation](#Installation)
 * [Usage](#Usage)
+* [Shiny application](#shiny-application)
 * [Acknowledgements](#Acknowledgements)
 
 ## Overview
+
 This workflow is used to analysis shRNA-seq and CRISPR/cas9 genetic screens. It uses edgeR to perform data processing, quality control, differential expression analysis, and gene set testing, with batch correction implemented. 
+
 ## Installation
 
-Install snakemake using the mamba package manager
+Install snakemake using the mamba package manager:
 
 ```bash
 $ mamba create -c conda-forge -c bioconda -n snakemake snakemake
@@ -23,9 +26,10 @@ $ mamba create -c conda-forge -c bioconda -n snakemake snakemake
 $ mamba activate snakemake
 ```
     
-Pull the workflow to your project directory
+Pull the workflow to your project directory:
+
 ```bash
-$ git pull https://github.com/zifornd/Bioinformatics-Internship
+$ git pull https://github.com/zifornd/shrnaseq
 ```
     
 ## Usage
@@ -39,9 +43,13 @@ $ nano config/config.yaml
 Run the workflow: 
 
 ```console
-$ snakemake --use-conda --cores 1
+$ snakemake --use-conda --cores all
 ```
 For further details on Snakemake, see the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/).
+
+## Shiny application
+
+The output of this workflow can be visualised in Shiny from RStudio, see the [shRNAseq shiny documentation]().
 
 ## Documentation
 

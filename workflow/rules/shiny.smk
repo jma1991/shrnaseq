@@ -1,6 +1,6 @@
 rule shiny:
     input:
-        rds=["results/filter_hairpins.rds",
+        rds=["results/filter_guideRNAs.rds",
         "results/corrected_counts.rds",
         "results/model_matrix.rds",
         "results/contrasts_matrix.rds",
@@ -14,7 +14,7 @@ rule shiny:
     message:
         "Data for shiny app"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/shiny.R"
 
@@ -35,6 +35,6 @@ rule shiny_contrasts:
     message:
         "Contrast data for shiny app"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/shiny_contrasts.R"

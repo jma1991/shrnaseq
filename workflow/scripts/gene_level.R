@@ -19,10 +19,10 @@ analysis=function(input, output, log) {
 
         sel = lrt$genes$Gene == i & !is.na(lrt$genes$Gene)
         
-        #number of hairpins
-        nhairpin=length(which(sel))
+        #number of guideRNAs
+        nguideRNA=length(which(sel))
         
-        if (nhairpin==1) {
+        if (nguideRNA==1) {
             logFC=lrt$table$logFC[which(sel)]
             IQRFC=NA
             if (logFC>0) {
@@ -38,7 +38,7 @@ analysis=function(input, output, log) {
             stouffers=NA
         }
         
-        if (nhairpin>1) {
+        if (nguideRNA>1) {
             #calculate average logFC
             logFC=mean(lrt$table$logFC[which(sel)])
             IQRFC=IQR(lrt$table$logFC[which(sel)])
@@ -48,7 +48,7 @@ analysis=function(input, output, log) {
                 dir="Down"
                 }
             
-            #select up regulated hairpins
+            #select up regulated guideRNAs
             res=lrt$table[which(sel),]
             up=res[which(res$logFC>0),]
             down=res[which(res$logFC<0),]
@@ -66,7 +66,7 @@ analysis=function(input, output, log) {
             stouffers=NA
             }
         }
-        vector=cbind(i,nhairpin, logFC, IQRFC, dir, dir_pval, stouffers)
+        vector=cbind(i,nguideRNA, logFC, IQRFC, dir, dir_pval, stouffers)
         dat=rbind(dat, vector)
     }
     dat=cbind(dat,p.adjust(dat[,"stouffers"], method="fdr"))

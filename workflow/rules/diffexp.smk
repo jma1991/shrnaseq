@@ -1,4 +1,4 @@
-rule corrected_counts:
+rule corrected_counts: 
     input:
         rds="results/estimateDisp.rds"
     output:
@@ -9,7 +9,7 @@ rule corrected_counts:
     message: 
         "Remove batch effect"
     conda:
-        "../envs/limma.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/corrected_counts.R" 
 
@@ -24,7 +24,7 @@ rule model_matrix:
     message:
         "Generate model matrix for edgeR analysis"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/model_matrix.R"
 
@@ -39,7 +39,7 @@ rule contrasts_matrix:
     message:
         "Generate matrix for group contrasts"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/contrasts_matrix.R"
 
@@ -54,7 +54,7 @@ rule estimateDisp:
     message: 
         "Perform differential representation analysis"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/estimateDisp.R" 
 
@@ -69,7 +69,7 @@ rule glmFit:
     message:
         "Fit negative bionomial GLM"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/glmFit.R" 
 
@@ -86,39 +86,39 @@ rule glmLRT:
     message:
         "Perform likelihood ratio test on GLM"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
         "../scripts/glmLRT.R" 
 
-rule top_hairpins:
+rule top_guideRNAs:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:
-        tsv="results/{contrast}-top-ranked-hairpins.tsv"
+        tsv="results/{contrast}-top-ranked-guideRNAs.tsv"
     log:
-        out = "logs/{contrast}-top-ranked-hairpins.out",
-        err = "logs/{contrast}-top-ranked-hairpins.err"
+        out = "logs/{contrast}-top-ranked-guideRNAs.out",
+        err = "logs/{contrast}-top-ranked-guideRNAs.err"
     message:
-        "Generate table of the top differentially expressed hairpins"
+        "Generate table of the top differentially expressed guideRNAs"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
-        "../scripts/top_hairpins.R"
+        "../scripts/top_guideRNAs.R"
 
-rule FDR_hairpins:
+rule FDR_guideRNAs:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:
-        tsv="results/{contrast}-FDR-sig-hairpins.tsv",
-        rds="results/{contrast}-FDR_hairpins.rds"
+        tsv="results/{contrast}-FDR-sig-guideRNAs.tsv",
+        rds="results/{contrast}-FDR_guideRNAs.rds"
     params:
         threshold=config["FDR"]
     log:
-        out = "logs/{contrast}-FDR-sig-hairpins.out",
-        err = "logs/{contrast}-FDR-sig-hairpins.err"
+        out = "logs/{contrast}-FDR-sig-guideRNAs.out",
+        err = "logs/{contrast}-FDR-sig-guideRNAs.err"
     message:
-        "Highlight and generate table of hairpins with FDR < 0.05"
+        "Highlight and generate table of guideRNAs with FDR < 0.05"
     conda:
-        "../envs/edger.yaml"
+        "../envs/analysis.yaml"
     script:
-        "../scripts/FDR_hairpins.R"
+        "../scripts/FDR_guideRNAs.R"

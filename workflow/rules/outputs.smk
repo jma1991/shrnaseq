@@ -2,8 +2,8 @@ def get_final_output():
     output = [
         directory(expand("resources/bioconductor/organism/lib/R/library/{organism}", organism = config["organism"])),
         "results/processAmplicons.rds",
-        "plots/counts-index-hairpins.png",
-        "results/filter_hairpins.rds",
+        "plots/counts-index-guideRNAs.png",
+        "results/filter_guideRNAs.rds",
         "results/norm.rds",
         "results/corrected_counts.rds",
         "plots/MDS-plot.png",
@@ -23,10 +23,10 @@ def get_final_output():
         output.append(f"results/{contrast}-glmLRT.rds")
         output.append(f"plots/{contrast}-expression-heatmap.png")
         output.append(f"plots/{contrast}-volcano-plot.png")
-        output.append(f"plots/{contrast}-hairpin-histogram.png")
-        output.append(f"results/{contrast}-top-ranked-hairpins.tsv")
-        output.append(f"results/{contrast}-FDR-sig-hairpins.tsv")
-        output.append(f"results/{contrast}-FDR_hairpins.rds")
+        output.append(f"plots/{contrast}-guideRNA-histogram.png")
+        output.append(f"results/{contrast}-top-ranked-guideRNAs.tsv")
+        output.append(f"results/{contrast}-FDR-sig-guideRNAs.tsv")
+        output.append(f"results/{contrast}-FDR_guideRNAs.rds")
         output.append(f"plots/{contrast}-plotSmear.png")
         output.append(f"results/{contrast}-camera.tsv")
         output.append(f"results/{contrast}-camera.rds")

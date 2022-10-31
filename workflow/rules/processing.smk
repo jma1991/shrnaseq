@@ -1,7 +1,7 @@
 rule processAmplicons:
     input: 
         index=config["samples"],
-        hairpins=config["hairpins"],
+        guideRNAs=config["guideRNAs"],
         fastq=config["fastq"]      
     output: 
         rds="results/processAmplicons.rds"
