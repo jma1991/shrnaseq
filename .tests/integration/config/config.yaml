@@ -5,7 +5,7 @@ organism: org.Mm.eg.db
 samples: config/GSE139118_Pool1revcompbarcodes.txt
 
 # path to hairpin file
-hairpins: config/GSE139118_Pool1revcompshRNA.tsv
+guideRNAs: config/GSE139118_Pool1revcompshRNA.tsv
 
 # path to fastq file
 fastq: [config/IBET.D4.R1_subset.fastq,
