@@ -55,7 +55,8 @@ rule plotSMEAR:
     output:
         plot="plots/{contrast}-plotSmear.png"
     params:
-        FC=config["FC"]
+        FC=config["FC"],
+        FDR=config["FDR"]
     log:
         out = "logs/{contrast}-plotSmear.out",
         err = "logs/{contrast}-plotSmear.err"

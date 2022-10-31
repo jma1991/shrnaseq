@@ -1,4 +1,4 @@
-rule processAmplicons:
+rule processAmplicons: 
     input: 
         index=config["samples"],
         guideRNAs=config["guideRNAs"],

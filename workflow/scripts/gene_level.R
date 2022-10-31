@@ -74,7 +74,7 @@ analysis=function(input, output, log) {
      "direction.smallest.pvalue", "stouffers.pvalue", "stouffers.FDR")
 
     write.table(dat, output$tsv, quote=F, row.names=F, sep=",")
-    saveRDS(dat,file=output$rds)
+    saveRDS(data.frame(dat),file=output$rds)
 
 }
 

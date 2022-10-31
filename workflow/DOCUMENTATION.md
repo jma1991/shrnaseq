@@ -178,7 +178,7 @@ See below for details of each output file. Any contrast-specific files include t
 
 ## Tests
 
-Test cases are in the `.test/integration` directory. They are automatically executed via
+Test cases are in the `.tests/integration` directory. They are automatically executed via
 continuous integration with GitHub Actions.
 
 ## References
@@ -190,11 +190,9 @@ continuous integration with GitHub Actions.
 - edgeR
 - DESeq2
 - DEFormats
-- mixOmics
 - limma
 - AnnotationDbi
 - GO.db
-- SummarizedExperiment
 
 ### CRAN
 

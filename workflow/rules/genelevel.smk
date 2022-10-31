@@ -17,7 +17,25 @@ rule camera:
         "../envs/analysis.yaml"
     script:
         "../scripts/camera.R"
- 
+
+rule camerarank: 
+    input:
+        tsv="results/{contrast}-camera.tsv"
+    output:
+        plot="plots/{contrast}-camerarank.png"
+    params:
+        contrast=get_contrast,
+        FDR=config["FDR"]
+    log:
+        out = "logs/{contrast}-camerarank.out",
+        err = "logs/{contrast}-camerarank.err"
+    message:
+        "Camera rank plot"
+    conda:
+        "../envs/plots.yaml"
+    script:
+        "../scripts/camerarank.R"
+
 rule gene_level:
     input:
         rds="results/{contrast}-glmLRT.rds"
@@ -34,5 +52,21 @@ rule gene_level:
     script:
         "../scripts/gene_level.R"
 
-
+rule generank: 
+    input:
+        tsv="results/{contrast}-gene-level.tsv"
+    output:
+        plot="plots/{contrast}-generank.png"
+    params:
+        contrast=get_contrast,
+        FC=config["FC"]
+    log:
+        out = "logs/{contrast}-generank.out",
+        err = "logs/{contrast}-generank.err"
+    message:
+        "Gene rank plot"
+    conda:
+        "../envs/plots.yaml"
+    script:
+        "../scripts/generank.R"
   

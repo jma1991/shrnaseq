@@ -10,3 +10,4 @@ dependencies:
   - r-rcolorbrewer
   - r-ggplot2
   - r-matrixstats
+  - r-tidyverse
