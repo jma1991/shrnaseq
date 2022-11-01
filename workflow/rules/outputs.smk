@@ -16,6 +16,7 @@ def get_final_output():
         "plots/sample-dist-heatmap.png",
         "plots/corrected-sample-dist-heatmap.png",
         "results/glmFit.rds",
+        "results/shinydata.rds",
         "results/shiny.rds"
     ]
     contrasts = config["contrast"]
@@ -41,6 +42,6 @@ def get_final_output():
         output.append(f"results/{contrast}-kegg.tsv")
         output.append(f"results/{contrast}-kegg.rds")
         output.append(f"results/{contrast}-top_kegg.tsv")
-        output.append(f"results/{contrast}-shiny.rds")
+        output.append(f"results/{contrast}-shinydata.rds")
 
     return output

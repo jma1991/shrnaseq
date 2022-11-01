@@ -5,9 +5,8 @@ rule shiny:
         "results/model_matrix.rds",
         "results/contrasts_matrix.rds",
         "results/estimateDisp.rds"]
-
     output:
-        rds="results/shiny.rds"
+        rds="results/shinydata.rds"
     log:
         out = "logs/shiny.out",
         err = "logs/shiny.err"
@@ -26,7 +25,7 @@ rule shiny_contrasts:
         tsv=["results/{contrast}-camera.tsv",
         "results/{contrast}-gene-level.tsv"]
     output:
-        rds="results/{contrast}-shiny.rds"
+        rds="results/{contrast}-shinydata.rds"
     params:
         contrast=get_contrast
     log:
@@ -38,3 +37,19 @@ rule shiny_contrasts:
         "../envs/analysis.yaml"
     script:
         "../scripts/shiny_contrasts.R"
+
+rule merge_shiny:
+    input:
+        rds=['results/shinydata.rds',
+        expand('results/{i}-shinydata.rds', i=config["contrast"])]
+    output:
+        rds="results/shiny.rds"
+    log:
+        out = "logs/merged-shiny.out",
+        err = "logs/merged-shiny.err"
+    message:
+        "Merge shiny files"
+    conda:
+        "../envs/analysis.yaml"
+    script:
+        "../scripts/merge_shiny.R"
