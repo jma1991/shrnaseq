@@ -50,7 +50,7 @@ For further details on Snakemake, see the [Snakemake documentation](https://snak
 
 ## Shiny application
 
-The output of this workflow can be visualised in Shiny from RStudio, see the [shRNAseq shiny documentation]().
+The output of this workflow can be visualised in Shiny from RStudio, see the [shRNAseq shiny documentation](https://github.com/zifornd/shrnaseq-shiny).
 
 ## Documentation
 

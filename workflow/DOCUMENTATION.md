@@ -79,6 +79,7 @@ results
 ├── norm.rds
 ├── processAmplicons.rds
 ├── shiny.rds
+├── shinydata.rds
 ├── {contrast}-camera.rds
 ├── {contrast}-camera.tsv
 ├── {contrast}-FDR_guideRNAs.rds
@@ -90,7 +91,7 @@ results
 ├── {contrast}-goana.tsv
 ├── {contrast}-kegg.rds
 ├── {contrast}-kegg.tsv
-├── {contrast}-shiny.rds
+├── {contrast}-shinydata.rds
 ├── {contrast}-top-goana.tsv
 ├── {contrast}-top-kegg.tsv
 └── {contrast}-top-ranked-guideRNAs.tsv
@@ -106,8 +107,10 @@ plots
 ├── MDS-plot.png
 ├── PCA-plot.png
 ├── sample-dist-heatmap.png
+├── {contrast}-camera.png
 ├── {contrast}-corrected-expression-heatmap.png
 ├── {contrast}-expression-heatmap.png
+├── {contrast}-generank.png
 ├── {contrast}-guideRNA-histogram.png
 ├── {contrast}-plotSmear.png
 └── {contrast}-volcano-plot.png
@@ -157,8 +160,10 @@ See below for details of each output file. Any contrast-specific files include t
 | --- | --- | --- |
 | `{contrast}-camera.tsv` | TSV |  Table of gene level results  |
 | `{contrast}-camera.rds` | RDS | Dataframe |
+| `{contrast}-camerarank.rds` | PNG | Camera rank plot |
 | `{contrast}-gene-level.tsv` | TSV |  Table of gene level results  |
 | `{contrast}-gene-level.rds` | RDS | Dataframe |
+| `{contrast}-generank.rds` | PNG | Gene rank plot |
 
 #### Gene enrichment analysis 
 | File | Format | Description |
@@ -174,7 +179,8 @@ See below for details of each output file. Any contrast-specific files include t
 | File | Format | Description |
 | --- | --- | --- |
 | `shiny.rds` | RDS |  List object  |
-| `{contrast}-shiny.rds` | RDS |  List object  |
+| `shinydata.rds` | RDS |  List object  |
+| `{contrast}-shinydata.rds` | RDS |  List object  |
 
 ## Tests
 
