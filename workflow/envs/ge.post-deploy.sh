@@ -1,6 +1,5 @@
 Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'
 Rscript -e 'BiocManager::install(version = "3.15")'
 Rscript -e 'BiocManager::install(c("limma", "edgeR"))'
-Rscript -e 'install.packages("RCurl")'
 Rscript -e 'BiocManager::install(c("AnnotationDbi", "GO.db"))'
-Rscript -e 'invisible(lapply(c("RCurl", "AnnotationDbi", "GO.db"), library, character.only = TRUE))'
+Rscript -e 'invisible(lapply(c("AnnotationDbi", "GO.db"), library, character.only = TRUE))'

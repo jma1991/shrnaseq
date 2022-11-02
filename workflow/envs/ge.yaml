@@ -6,3 +6,4 @@ channels:
   - defaults
 dependencies:
   - r-base=4.2
+  - r-rcurl
