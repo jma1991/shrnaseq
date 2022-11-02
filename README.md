@@ -15,7 +15,7 @@ Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using ed
 
 ## Overview
 
-This workflow is used to analysis shRNA-seq and CRISPR/cas9 genetic screens. It uses edgeR to perform data processing, quality control, differential expression analysis, and gene set testing, with batch correction implemented. 
+This workflow is used to analysis shRNA-seq and CRISPR/cas9 genetic screens. The workflow is built in [Snakemake](https://snakemake.readthedocs.io/en/stable/), a workflow managament system. It primarily uses [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), a Biocondutor R package which allows for differential expression analysis of RNA-seq expression profiles. The workflow performs data processing, quality control, differential expression analysis, and gene set testing, with batch correction implemented. 
 
 ## Installation
 
@@ -56,10 +56,16 @@ The output of this workflow can be visualised in Shiny from RStudio, see the [sh
 
 See the [Documentation](workflow/DOCUMENTATION.md) file for configuration and output information.
 
-## Acknowledgements
+## Citations
 
 This workflow is based on the following research article:
 
 ```
 Dai Z, Sheridan JM, Gearing LJ et al. edgeR: a versatile tool for the analysis of shRNA-seq and CRISPR-Cas9 genetic screens [version 2; peer review: 3 approved]. F1000Research 2014, 3:95 (https://doi.org/10.12688/f1000research.3928.2)
+```
+
+using the Snakemake management system:
+ 
+```
+Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 2; peer review: 2 approved]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.2)
 ```
