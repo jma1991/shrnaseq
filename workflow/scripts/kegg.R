@@ -9,12 +9,15 @@ analysis=function(input, output, params, log) {
     sink(err, type = "message")
 
     #Script
+    library(AnnotationDbi)
     library(params$organism, lib.loc=dirname(input$pkg), character.only = TRUE)
 
     matrix=readRDS(input$rds[1])
     lrt=readRDS(input$rds[2])
+
     org <- params$organism
     obj <- getFromNamespace(org, org)
+    
     row.names(lrt) <- keys(obj)[1:nrow(lrt)]
     library(limma)
     keg = kegga(lrt, species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2], 
