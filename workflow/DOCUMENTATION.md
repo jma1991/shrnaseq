@@ -187,9 +187,12 @@ See below for details of each output file. Any contrast-specific files include t
 Test cases are in the `.tests/integration` directory. They are automatically executed via
 continuous integration with GitHub Actions.
 
-## References
+## Citations
 
-- Snakemake - Mölder, F., Jablonski, K.P., Letcher, B., Hall, M.B., Tomkins-Tinch, C.H., Sochat, V., Forster, J., Lee, S., Twardziok, S.O., Kanitz, A., Wilm, A., Holtgrewe, M., Rahmann, S., Nahnsen, S., Köster, J., 2021. Sustainable data analysis with Snakemake. F1000Res 10, 33
+- Dai Z, Sheridan JM, Gearing LJ et al. edgeR: a versatile tool for the analysis of shRNA-seq and CRISPR-Cas9 genetic screens [version 2; peer review: 3 approved]. F1000Research 2014, 3:95 (https://doi.org/10.12688/f1000research.3928.2)
+
+- Mölder F, Jablonski KP, Letcher B et al. Sustainable data analysis with Snakemake [version 2; peer review: 2 approved]. F1000Research 2021, 10:33 (https://doi.org/10.12688/f1000research.29032.2)
+
 
 ### Bioconductor
 
@@ -207,3 +210,4 @@ continuous integration with GitHub Actions.
 - ggplot2
 - matrixStats
 - metap
+- RCurl
