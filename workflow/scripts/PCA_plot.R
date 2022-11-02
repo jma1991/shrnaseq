@@ -4,19 +4,19 @@ pcaplt <- function(x, mat, pcatitle) {
     ind <- order(var, decreasing = TRUE)[seq_len(num)]
     pca <- prcomp(t(mat[ind, ]))
     pct <- (pca$sdev ^ 2) / sum(pca$sdev ^ 2)
-    dat <- data.frame(PC1 = pca$x[,1], PC2 = pca$x[,2], group = x$samples$group)
-    colors <- brewer.pal(length(unique(x$samples$group)),"Set3")
+    dat <- data.frame(
+        PC1 = pca$x[,1],
+        PC2 = pca$x[,2],
+        group = x$samples$group) 
 
     ggplot(dat, aes_string(x = "PC1", y = "PC2", color = "group")) + 
-    geom_point(size = 3) + 
-    xlab(paste0("PC1: ", round(pct[1] * 100), "% variance")) + 
-    ylab(paste0("PC2: ", round(pct[2] * 100), "% variance")) + 
-    coord_fixed() +
-    theme_bw() + 
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    labs(title=pcatitle) + 
-    theme(plot.title = element_text(hjust = 0.5,  face="bold")) + theme(legend.position="bottom") +
-    scale_color_manual(values=colors)
+      geom_point(size = 3) + 
+      xlab(paste0("PC1: ", round(pct[1] * 100), "% variance")) + 
+      ylab(paste0("PC2: ", round(pct[2] * 100), "% variance")) + 
+      coord_fixed() +
+      labs(title=pcatitle, color="") + 
+      scale_color_brewer(palette="Set3") +
+      theme_classic() 
 
 }
 

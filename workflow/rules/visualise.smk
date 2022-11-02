@@ -24,6 +24,8 @@ rule volcano_plot:
         rds="results/{contrast}-glmLRT.rds"
     output:
         plot="plots/{contrast}-volcano-plot.png"
+    params:
+        FDR=config["FDR"]
     log:
         out = "logs/{contrast}-volcano-plot.out",
         err = "logs/{contrast}-volcano-plot.err" 
@@ -51,7 +53,7 @@ rule guideRNA_histogram:
 
 rule plotSMEAR:
     input:
-        rds=["results/{contrast}-glmLRT.rds", "results/{contrast}-FDR_guideRNAs.rds"]
+        rds="results/{contrast}-glmLRT.rds"
     output:
         plot="plots/{contrast}-plotSmear.png"
     params:

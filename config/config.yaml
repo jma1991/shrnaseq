@@ -33,4 +33,4 @@ contrast:
 FDR: 0.85
 
 # specifiy fold change threshold
-FC: 5
+FC: 1.5

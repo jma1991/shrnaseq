@@ -23,7 +23,7 @@ analysis=function(input, output, params, log) {
     
     lrt=readRDS(input$rds[1])
     top2 = topTags(lrt, n=Inf)
-    selY <- rownames(top2$table)[abs(top2$table$logFC)>params$FC]
+    selY <- selY <- rownames(top2)[c(1:20)]
 
     x=readRDS(input$rds[2])
     mat <- cpm(x$counts, log=TRUE, prior.count = 1)

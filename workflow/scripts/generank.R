@@ -14,16 +14,35 @@
     genelevel <- read.table(input$tsv, header=T, sep=",")
 
     colnames(genelevel) <- c("Gene", "nGuides", "Mean logFC", "IQR logFC", "Direction mean logFC",	"Direction smallest Pvalue", "Stouffer's Pvalue", "Stouffer's FDR")
-    print(head(genelevel))
-    genelevel$Rank <- rank(genelevel$"Mean logFC")
-    print(head(genelevel))
-    plt=ggplot(genelevel, aes(x=Rank, y=`Mean logFC`, label=Gene)) +
-      geom_point(aes(size=nGuides), color="#b8dbcc") +
-      #geom_text(data=genelevel[genelevel$`Mean logFC`>params$FC,], check_overlap = TRUE, nudge_x = max(genelevel$Rank)*0.05) +
-      #geom_text(data=genelevel[genelevel$`Mean logFC`<(-(params$FC)),], check_overlap = TRUE, nudge_x = max(genelevel$Rank)*0.05) +
-      labs(title= "Gene level rank plot") +
-      theme(plot.title = element_text(hjust = 0.5)) +
-      theme_classic()
+    
+    res <- as.data.frame(genelevel)
+    FC_index=c(paste0("> ", params$FC), paste0("< ", params$FC, " and > -", params$FC), paste0("< -", params$FC))
+
+    res$LogFC <- factor(FC_index[2], levels = FC_index)
+    res$LogFC[res$`Mean logFC`>params$FC] <- FC_index[1]
+    res$LogFC[res$`Mean logFC`<(-(params$FC))] <- FC_index[3]
+    res$Rank <- rank(res$`Mean logFC`)
+
+    col <- c( "#FF0000","#B8DBCC", "#6495ED")
+    names(col)=c(FC_index)
+    res.up <-  res[order(-res$`Mean logFC`),]
+    res.up <- res.up[res.up$`Mean logFC`>params$FC,][c(1:5),]
+    res.down <- res[order(res$`Mean logFC`),]
+    res.down <- res.down[res.down$`Mean logFC`<(-params$FC),][c(1:5),]
+
+    plt <- ggplot(res, aes(x = Rank, y = `Mean logFC`, colour = LogFC, size = nGuides, label = Gene)) + 
+      geom_point() + 
+      geom_point(data = res.up, shape = 1, color="black") + 
+      geom_point(data = res.down, shape = 1, color="black") + 
+      geom_text(data = res.up, hjust = 0, nudge_x = -20, color="black", size=3, check_overlap = T) +  
+      geom_text(data = res.down, hjust = 0, nudge_x = -20, color="black", size=3, check_overlap = T) + 
+      theme_classic() +
+      scale_colour_manual(values = col, breaks = names(col)) + 
+      labs(title = "Gene rank",
+        x = "Rank",
+        y = "Mean log fold-change",
+        colour = "LogFC"
+      )  
     png(output$plot, width=3000, height=3500, res=400)
     print(plt)
     dev.off()

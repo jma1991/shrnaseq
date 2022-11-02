@@ -10,13 +10,28 @@ analysis=function(input, output, params, log) {
 
     #Script
   library(edgeR)
+  library(ggplot2)
   lrt=readRDS(input$rds[1])
-  top2ids=readRDS(input$rds[2])
+  top2 <- topTags(lrt, n=Inf)
+  top2ids <- top2$table[(top2$table$logFC>params$FC | top2$table$logFC<(-(params$FC))),1]
+  selY=top2$table[top2$table$FDR<params$FDR,]
+  df <- data.frame(lrt$table)
+  df$Guide <- rownames(df)
+  colors <- c("FDR sig." = "red")
 
+  plt=ggplot(df, aes(x=logCPM, y=logFC, text=Guide)) +
+    geom_point(color = "#b8dbcc") +
+    geom_point(data = df[(row.names(df) %in% top2ids),], color = "#000000") +
+    geom_point(data = df[(df$Guide %in% selY$ID),], aes(color = "FDR sig.")) +
+    geom_hline(yintercept=(-(params$FC)), linetype="dashed", color="#b8dbcc") +
+    geom_hline(yintercept=0,  color="cornflowerblue") +
+    geom_hline(yintercept=(params$FC), linetype="dashed", color="#b8dbcc") +
+    labs(title = "Mean difference plot",
+    color="") +
+    scale_color_manual(values = colors) +
+    theme_classic()
   png(output$plot, width=2000, height=2000, res=400)
-    plotSmear(lrt, de.tags=top2ids,
-      pch=20, cex=0.6, main="logFC vs logCPM")
-    abline(h = c(-(params$FC), 0, (params$FC)), col = c("dodgerblue", "yellow", "dodgerblue"), lty=2)
+    print(plt)
   dev.off()
 }
 
