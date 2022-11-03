@@ -7,11 +7,12 @@ Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using ed
 
 ## Table of Contents
 
-* [Overview](#Overview)
-* [Installation](#Installation)
-* [Usage](#Usage)
+* [Overview](#overview)
+* [Installation](#installation)
+* [Usage](#usage)
 * [Shiny application](#shiny-application)
-* [Acknowledgements](#Acknowledgements)
+* [Documentation](#documentation)
+* [Citations](#citations)
 
 ## Overview
 

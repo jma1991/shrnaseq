@@ -1,11 +1,11 @@
 # Documentation
 
 ## Table of contents
-* [Usage](#Usage)
-* [Configuration](#Configuration)
-* [Output](#Output)
-* [Tests](#Tests)
-* [References](#References)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [Output](#output)
+* [Tests](#tests)
+* [Citations](#citations)
 
 ## Usage 
 
