@@ -5,7 +5,8 @@
 * [Configuration](#configuration)
 * [Output](#output)
 * [Tests](#tests)
-* [Citations](#citations)
+* [FAQs](#faqs)
+* [References](#references)
 
 ## Usage 
 
@@ -187,7 +188,36 @@ See below for details of each output file. Any contrast-specific files include t
 Test cases are in the `.tests/integration` directory. They are automatically executed via
 continuous integration with GitHub Actions.
 
-## Citations
+## FAQs
+
+### How do I know which Bioconductor organism package to include in the `config.yaml` file?
+
+Navigate to the [Bioconductor Annotation
+Packages](https://www.bioconductor.org/packages/release/data/annotation/) page
+and search for the matching platform, annotation, and organism packages.
+
+For example, an experiment which uses the Mus musculus genome
+requires the following packages:
+
+```yaml
+organism: org.Mm.eg.db
+```
+### How do I remove batch effects from the expression data?
+
+To remove batch effects, specify a batch column in the sample table.
+
+Batch effects are removed from the expression data using the *removeBatchEffect*
+function from the limma Bioconductor package.
+
+Importantly, the batch-free expression data is not used for differential
+expression analysis. Instead, the batch factor is included in the design matrix.
+
+| ID | Sequences | group | batch |
+| --- | --- | --- | --- |
+| 1 | GAAA | Day2 | 1 |
+| 2 | GAAC | Day10 | 2 |
+
+## References
 
 - Dai Z, Sheridan JM, Gearing LJ et al. edgeR: a versatile tool for the analysis of shRNA-seq and CRISPR-Cas9 genetic screens [version 2; peer review: 3 approved]. F1000Research 2014, 3:95 (https://doi.org/10.12688/f1000research.3928.2)
 
