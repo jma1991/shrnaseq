@@ -1,6 +1,6 @@
 # shrnaseq <img align="right" width="160" src="images/logo-2.png">
 
-Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using edgeR
+Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using edgeR.
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥7.8.5-brightgreen.svg)](https://snakemake.github.io)
 [![GitHub-Actions](https://github.com/zifornd/shrnaseq/workflows/Tests/badge.svg?branch=master)](https://github.com/zifornd/shrnaseq/actions)
