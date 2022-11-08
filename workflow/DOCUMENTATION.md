@@ -6,7 +6,7 @@
 * [Output](#output)
 * [Tests](#tests)
 * [FAQs](#faqs)
-* [References](#references)
+* [References](#acknowledgements)
 
 ## Usage 
 
@@ -217,7 +217,7 @@ expression analysis. Instead, the batch factor is included in the design matrix.
 | 1 | GAAA | Day2 | 1 |
 | 2 | GAAC | Day10 | 2 |
 
-## References
+## Acknowledgements
 
 - Dai Z, Sheridan JM, Gearing LJ et al. edgeR: a versatile tool for the analysis of shRNA-seq and CRISPR-Cas9 genetic screens [version 2; peer review: 3 approved]. F1000Research 2014, 3:95 (https://doi.org/10.12688/f1000research.3928.2)
 

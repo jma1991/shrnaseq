@@ -1,4 +1,4 @@
-# shrnaseq
+# shrnaseq <img align="right" width="120" src="images/logo-2.png">
 
 Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using edgeR
 
@@ -63,7 +63,7 @@ See the [Documentation](workflow/DOCUMENTATION.md) file for configuration and ou
 
 ## Contributing
 
-See [contributing.md](CONTRIBUTING.md) for ways to get started.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for ways to get started.
 
 Please adhere to this project's [code of conduct](CODE_OF_CONDUCT.md).
 
