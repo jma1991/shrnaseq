@@ -1,4 +1,4 @@
-# shrnaseq <img align="right" width="160" src="images/logo-2.png">
+# shrnaseq <img align="right" width="160" src="images/logo.png">
 
 Snakemake workflow of shRNA-seq and CRISPR-Cas9 genetic screen analysis using edgeR.
 
