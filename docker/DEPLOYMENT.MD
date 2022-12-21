@@ -15,7 +15,7 @@ AWS credentials are required to pull data from an S3 bucket. You will need to ge
 
 These should be stored in the [.env](./.env) file as outlined [here](https://docs.docker.com/compose/env-file/).
 
-docker can be installed by the following the instructions appropriate for your OS [here](https://docs.docker.com/get-docker/).
+docker can be installed by following the instructions appropriate for your OS [here](https://docs.docker.com/get-docker/).
 
 If you're using Windows, it's recommended that you install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and configure an [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#4-configure-ubuntu) environment. 
 
