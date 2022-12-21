@@ -2,7 +2,7 @@
 
 ## Overview
 
-Deployment of the shranseq workflow is controlled via an orchestrated series of docker containers. 
+Deployment of the shranseq workflow is controlled via a series of docker containers. 
 
 Input data is pulled from an AWS S3 bucket within a Python container, transferred to a Snakemake container for processing and then output data transferred to a Python container to be uploaded to the S3 bucket.
 
