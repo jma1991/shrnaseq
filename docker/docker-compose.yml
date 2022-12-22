@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  python-s3-input:
+    image: shrnaseq-python-s3
+    tty: true
+    build:
+      context: ..
+      dockerfile: ./docker/python-s3/Dockerfile
+    container_name: shrnaseq-python-s3-input
+    environment:
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - TEST_ENV=${TEST_ENV}
+    command: python3.10 s3/pull_s3_input_data.py
+    volumes:
+      - s3-input-data:/home/python-s3-user/config
+
+  snakemake:
+    image: shrnaseq-snakemake
+    tty: true
+    build:
+      context: ..
+      dockerfile: ./docker/snakemake/Dockerfile
+    container_name: shrnaseq-snakemake
+    command: snakemake --use-conda --cores all
+    depends_on:
+      python-s3-input:
+        condition: service_completed_successfully
+    volumes:
+      - s3-input-data:/home/mambauser/config
+      - s3-output-data:/home/mambauser
+
+  python-s3-output:
+    image: shrnaseq-python-s3
+    tty: true
+    build:
+      context: ..
+      dockerfile: ./docker/python-s3/Dockerfile
+    container_name: shrnaseq-python-s3-output
+    depends_on:
+      snakemake:
+        condition: service_completed_successfully
+    environment:
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - TEST_ENV=${TEST_ENV}
+    command: python3.10 s3/push_s3_output_data.py
+    volumes:
+      - s3-output-data:/home/python-s3-user/output
+
+volumes:
+  s3-input-data:
+  s3-output-data:

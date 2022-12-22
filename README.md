@@ -53,6 +53,10 @@ $ snakemake --use-conda --cores all
 ```
 For further details on Snakemake, see the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/).
 
+## Deployment
+
+Instructions on how to deploy the workflow using docker can be found [here](./docker/DEPLOYMENT.MD)
+
 ## Shiny application
 
 The output of this workflow can be visualised in Shiny from RStudio, see the [shRNAseq shiny documentation](https://github.com/zifornd/shrnaseq-shiny).
