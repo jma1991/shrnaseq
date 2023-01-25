@@ -36,7 +36,9 @@ SECRET_KEY_PARAMETER_NAME=shrnaseq-secret-key
 - `S3_EXECUTION_FOLDER` variable is the name of the folder that is created to trigger the workflow.
 - `ACCESS_KEY_PARAMETER_NAME` and `SECRET_KEY_PARAMETER_NAME` variables are the names of the AWS Systems Manager Parameter Store parameters to store the AWS access key and secret key.
 
-Once the `.env` file is created, run the following commands:
+You will need to push a built docker image to the ECR repository to use it in the ECS task.
+
+Once this is done, run the following commands:
 
 ```bash
 terraform init
