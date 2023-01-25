@@ -17,7 +17,7 @@ provider "aws" {
 # - ACCESS_KEY_PARAMETER_NAME
 # - SECRET_KEY_PARAMETER_NAME
 locals {
-  envs = { for tuple in regexall("(.*)=(.*)", file("../.env")) : tuple[0] => sensitive(tuple[1]) }
+  envs = { for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => sensitive(tuple[1]) }
 }
 
 ## Network resources
