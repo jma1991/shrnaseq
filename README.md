@@ -55,6 +55,10 @@ For further details on Snakemake, see the [Snakemake documentation](https://snak
 
 Alternatively, the [Dockerfile](./Dockerfile) can be used to run the workflow in a container.
 
+## Deployment
+
+Terraform scripts are provided to deploy the workflow to ECS with files stored in S3. See the [deployment](deployment/README.md) documentation for more details.
+
 ## Shiny application
 
 The output of this workflow can be visualised in Shiny from RStudio, see the [shRNAseq shiny documentation](https://github.com/zifornd/shrnaseq-shiny).
