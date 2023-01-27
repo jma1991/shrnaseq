@@ -53,9 +53,7 @@ $ snakemake --use-conda --cores all
 ```
 For further details on Snakemake, see the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/).
 
-## Deployment
-
-Instructions on how to deploy the workflow using docker can be found [here](./docker/DEPLOYMENT.MD)
+Alternatively, the [Dockerfile](./Dockerfile) can be used to run the workflow in a container.
 
 ## Shiny application
 
