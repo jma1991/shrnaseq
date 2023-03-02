@@ -73,6 +73,7 @@ Please adhere to this project's [code of conduct](CODE_OF_CONDUCT.md).
 
 - [Claire Prince](https://github.com/prince-claire)
 - [James Ashmore](https://github.com/jma1991)
+- [Joseph Smith](https:://github.com/joekitsmith)
 
 ## Acknowledgements
 
