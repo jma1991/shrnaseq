@@ -16,12 +16,11 @@ main <- function(input, output, params, log) {
 
     library(edgeR)
 
-    object <- processAmplicons(
-        readfile = input$readfile,
-        barcodefile = input$barcodefile,
-        hairpinfile = input$hairpinfile,
-        hairpinBeforeBarcode = params$hairpinBeforeBarcode
-    )
+    object <- readRDS(input$rds)
+
+    keep <- filterByExpr(object, group = object$samples$Condition)
+
+    object <- object[keep, , keep.lib.sizes = FALSE]
 
     saveRDS(object, file = output$rds)
 

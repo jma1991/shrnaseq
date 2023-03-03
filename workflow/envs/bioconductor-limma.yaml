@@ -3,6 +3,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - bioconductor-edger
   - bioconductor-limma
-  - r-metap

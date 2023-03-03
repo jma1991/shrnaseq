@@ -1,4 +1,7 @@
-#!/usr/bin/env Rscript
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
 
 main <- function(input, output, log) {
 
@@ -16,13 +19,13 @@ main <- function(input, output, log) {
 
     library(edgeR)
 
-    object <- readRDS(input$rds[1])
+    object <- readRDS(input$rds)
 
-    design <- readRDS(input$rds[2])
+    png(output$png, width = 8, height = 4, units = "in", res = 300)
 
-    object <- estimateDisp(object, design)
+    plotBCV(object)
 
-    saveRDS(object, file = output$rds)
+    dev.off()
 
 }
 

@@ -2,7 +2,7 @@
 
 main <- function(input, output, log) {
 
-    # Log
+    # Log 
 
     out <- file(log$out, open = "wt")
 
@@ -16,11 +16,9 @@ main <- function(input, output, log) {
 
     library(edgeR)
 
-    object <- readRDS(input$rds[1])
+    object <- readRDS(input$rds)
 
-    design <- readRDS(input$rds[2])
-
-    object <- estimateDisp(object, design)
+    object <- calcNormFactors(object)
 
     saveRDS(object, file = output$rds)
 

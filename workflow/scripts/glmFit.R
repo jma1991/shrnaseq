@@ -1,5 +1,7 @@
-analysis=function(input, output, log) {
-    #Log 
+main <- function(input, output, log) {
+
+    # Log
+
     out <- file(log$out, open = "wt")
 
     err <- file(log$err, open = "wt")
@@ -8,14 +10,18 @@ analysis=function(input, output, log) {
 
     sink(err, type = "message")
 
-    #Script
-    library(edgeR)
-    des=readRDS(input$rds[1])
-    xglm=readRDS(input$rds[2])
+    # Script
 
-    fit = glmFit(xglm, des)
-    saveRDS(fit,file=output$rds)
+    library(edgeR)
+
+    object <- readRDS(input$rds[1])
+
+    design <- readRDS(input$rds[2])
+
+    object <- glmFit(object, design)
+
+    saveRDS(object, file = output$rds)
 
 }
 
-analysis(snakemake@input, snakemake@output, snakemake@log)
+main(snakemake@input, snakemake@output, snakemake@log)

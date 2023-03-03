@@ -1,124 +1,96 @@
-rule corrected_counts: 
-    input:
-        rds="results/estimateDisp.rds"
-    output:
-        rds="results/corrected_counts.rds"
-    log:
-        out = "logs/corrected_counts.out",
-        err = "logs/corrected_counts.err" 
-    message: 
-        "Remove batch effect"
-    conda:
-        "../envs/analysis.yaml"
-    script:
-        "../scripts/corrected_counts.R" 
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
 
-rule model_matrix:
+rule modelMatrix:
     input:
-        rds="results/norm.rds"
+        rds = "results/calcNormFactors.rds"
     output:
-        rds="results/model_matrix.rds"
+        rds = "results/modelMatrix.rds"
     log:
-        out = "logs/model_matrix.out",
-        err = "logs/model_matrix.err"
+        out = "logs/modelMatrix.out",
+        err = "logs/modelMatrix.err"
     message:
-        "Generate model matrix for edgeR analysis"
+        "Construct Design Matrix"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/bioconductor-edger.yaml"
     script:
-        "../scripts/model_matrix.R"
+        "../scripts/modelMatrix.R"
 
-rule contrasts_matrix:
+rule makeContrasts:
     input:
-        rds="results/model_matrix.rds"
+        rds = "results/calcNormFactors.rds"
     output:
-        rds="results/contrasts_matrix.rds"
+        rds = "results/makeContrasts.rds"
     log:
-        out = "logs/contrasts_matrix.out",
-        err = "logs/contrasts_matrix.err"
+        out = "logs/makeContrasts.out",
+        err = "logs/makeContrasts.err"
     message:
-        "Generate matrix for group contrasts"
+        "Construct Contrasts Matrix"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/environment.yaml"
     script:
-        "../scripts/contrasts_matrix.R"
+        "../scripts/makeContrasts.R"
 
 rule estimateDisp:
     input:
-        rds=["results/norm.rds", "results/model_matrix.rds"]
+        rds = ["results/calcNormFactors.rds", "results/modelMatrix.rds"]
     output:
-        rds="results/estimateDisp.rds"
+        rds = "results/estimateDisp.rds"
     log:
         out = "logs/estimateDisp.out",
         err = "logs/estimateDisp.err"
     message: 
-        "Perform differential representation analysis"
+        "Estimate Dispersions"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/bioconductor-edger.yaml"
     script:
         "../scripts/estimateDisp.R" 
 
 rule glmFit:
     input:
-        rds=["results/model_matrix.rds", "results/estimateDisp.rds"]
+        rds = ["results/estimateDisp.rds", "results/modelMatrix.rds"]
     output:
-        rds="results/glmFit.rds"
+        rds = "results/glmFit.rds"
     log:
         out = "logs/glmFit.out",
         err = "logs/glmFit.err" 
     message:
-        "Fit negative bionomial GLM"
+        "Fit NB-GLM"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/bioconductor-edger.yaml"
     script:
         "../scripts/glmFit.R" 
 
 rule glmLRT:
     input:
-        rds=["results/contrasts_matrix.rds", "results/glmFit.rds"]
+        rds = ["results/glmFit.rds", "results/makeContrasts.rds"]
     output:
-        rds="results/{contrast}-glmLRT.rds"
+        rds = "results/{contrast}.glmLRT.rds"
     params:
-        contrast=get_contrast
+        contrast = lambda wildcards: wildcards.contrast
     log:
-        out = "logs/{contrast}-glmLRT.out",
-        err = "logs/{contrast}-glmLRT.err" 
+        out = "logs/{contrast}.glmLRT.out",
+        err = "logs/{contrast}.glmLRT.err" 
     message:
         "Perform likelihood ratio test on GLM"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/bioconductor-edger.yaml"
     script:
         "../scripts/glmLRT.R" 
 
-rule top_guideRNAs:
+rule topTags:
     input:
-        rds="results/{contrast}-glmLRT.rds"
+        rds = "results/{contrast}.glmLRT.rds"
     output:
-        tsv="results/{contrast}-top-ranked-guideRNAs.tsv"
+        tsv = "results/{contrast}.topTags.tsv"
     log:
-        out = "logs/{contrast}-top-ranked-guideRNAs.out",
-        err = "logs/{contrast}-top-ranked-guideRNAs.err"
+        out = "logs/{contrast}.topTags.out",
+        err = "logs/{contrast}.topTags.err"
     message:
-        "Generate table of the top differentially expressed guideRNAs"
+        "Table of the Top Differentially Expressed Tags"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/bioconductor-edger.yaml"
     script:
-        "../scripts/top_guideRNAs.R"
-
-rule FDR_guideRNAs:
-    input:
-        rds="results/{contrast}-glmLRT.rds"
-    output:
-        tsv="results/{contrast}-FDR-sig-guideRNAs.tsv",
-        rds="results/{contrast}-FDR_guideRNAs.rds"
-    params:
-        threshold=config["FDR"]
-    log:
-        out = "logs/{contrast}-FDR-sig-guideRNAs.out",
-        err = "logs/{contrast}-FDR-sig-guideRNAs.err"
-    message:
-        "Highlight and generate table of guideRNAs with FDR < 0.05"
-    conda:
-        "../envs/analysis.yaml"
-    script:
-        "../scripts/FDR_guideRNAs.R"
+        "../scripts/topTags.R"

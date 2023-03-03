@@ -1,5 +1,3 @@
-#!/usr/bin/env Rscript
-
 main <- function(input, output, log) {
 
     # Log
@@ -16,13 +14,11 @@ main <- function(input, output, log) {
 
     library(edgeR)
 
-    object <- readRDS(input$rds[1])
+    object <- readRDS(input$rds)
 
-    design <- readRDS(input$rds[2])
+    results <- topTags(object, n = Inf, sort.by = "none")
 
-    object <- estimateDisp(object, design)
-
-    saveRDS(object, file = output$rds)
+    write.table(results, file = output$tsv, quote = FALSE, sep = "\t", row.names = FALSE)
 
 }
 

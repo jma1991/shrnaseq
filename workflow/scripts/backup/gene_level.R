@@ -1,5 +1,12 @@
-analysis=function(input, output, log) {
-    #Log 
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
+
+main <- function(input, output, log) {
+
+    # Log
+
     out <- file(log$out, open = "wt")
 
     err <- file(log$err, open = "wt")
@@ -8,9 +15,12 @@ analysis=function(input, output, log) {
 
     sink(err, type = "message")
 
-    #Script
+    # Script
+
     library(edgeR)
+
     library(metap)
+
     lrt=readRDS(input$rds)
     # gene level
     dat=NULL

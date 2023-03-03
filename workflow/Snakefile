@@ -1,3 +1,8 @@
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
+
 # Configuration file
 configfile: "config/config.yaml"
 
@@ -5,16 +10,14 @@ configfile: "config/config.yaml"
 container: "docker://continuumio/miniconda3"
 
 # Workflow rules
-include: "rules/resources.smk"
 include: "rules/common.smk"
-include: "rules/outputs.smk"
+include: "rules/resources.smk"
 include: "rules/processing.smk"
 include: "rules/qc.smk"
 include: "rules/diffexp.smk"
-include: "rules/visualise.smk"
+# include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
-include: "rules/ge.smk"
-include: "rules/shiny.smk"
+# include: "rules/ge.smk"
 
 # Target rule
 rule all:

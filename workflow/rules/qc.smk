@@ -1,91 +1,70 @@
-rule filter_guideRNAs:
-    input:
-        rds="results/processAmplicons.rds"
-    output:
-        rds="results/filter_guideRNAs.rds",
-        plot="plots/counts-index-guideRNAs.png"
-    log:
-        out = "logs/filter_guideRNAs.out",
-        err = "logs/filter_guideRNAs.err"
-    message:
-        "Filter guideRNAs with counts of > 0.5 counts per million in at least 3 samples, and plots of counts per index and guideRNAs"
-    conda:
-        "../envs/analysis.yaml"
-    script:
-        "../scripts/filter_guideRNAs.R"
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
 
-rule norm:
+rule plotMDS:
     input:
-        rds="results/filter_guideRNAs.rds"
+        rds = "results/calcNormFactors.rds"
     output:
-        rds="results/norm.rds"
+        png = "results/plotMDS.png"
+    params:
+        group = "Condition"
     log:
-        out = "logs/norm.out",
-        err = "logs/norm.err"
+        out = "logs/plotMDS.png",
+        err = "logs/plotMDS.png"
     message:
-        "Normalise counts"
+        "Plot Multi-Dimensional Scaling"
     conda:
-        "../envs/analysis.yaml"
+        "../envs/environment.yaml"
     script:
-        "../scripts/norm.R"
+        "../scripts/plotMDS.R"
 
-        
-rule MDS_plot:
+rule plotPCA:
     input:
-        rds=["results/norm.rds", "results/corrected_counts.rds"]
+        rds = "results/calcNormFactors.rds"
     output:
-        plot=["plots/MDS-plot.png", "plots/corrected-MDS-plot.png"]
+        png = "results/plotPCA.png"
+    params:
+        group = "Condition"
     log:
-        out = "logs/MDS_plot.out",
-        err = "logs/MDS_plot.err"
+        out = "logs/plotPCA.out",
+        err = "logs/plotPCA.err"
     message:
-        "Multidimensional Scaling plot to visualise relationship between samples"
+        "Plot Principal Components Analysis"
     conda:
-        "../envs/plots.yaml"
+        "../envs/environment.yaml"
     script:
-        "../scripts/MDS_plot.R"
+        "../scripts/plotPCA.R"
 
-rule PCA_plot:
+rule plotBCV:
     input:
-        rds=["results/norm.rds", "results/corrected_counts.rds"]
+        rds = "results/estimateDisp.rds"
     output:
-        plot=["plots/PCA-plot.png", "plots/corrected-PCA-plot.png"]
+        png = "results/plotBCV.png"
     log:
-        out = "logs/PCA_plot.out",
-        err = "logs/PCA_plot.err"   
+        out = "logs/plotBCV.out",
+        err = "logs/plotBCV.err"
     message:
-        "Visualise relationships between first 2 principal components"
+        "Plot Biological Coefficient of Variation"
     conda:
-        "../envs/plots.yaml"
+        "../envs/environment.yaml"
     script:
-        "../scripts/PCA_plot.R"
+        "../scripts/plotBCV.R"
 
-rule sample_dist_heatmap:
+rule plotDist:
     input:
-        rds=["results/norm.rds",  "results/corrected_counts.rds"]
+        rds = "results/calcNormFactors.rds"
     output:
-        plot=["plots/sample-dist-heatmap.png", "plots/corrected-sample-dist-heatmap.png"]
+        png = "results/plotDist.png"
+    params:
+        group = "Condition"
     log:
-        out = "logs/sample_dist_heatmap.out",
-        err = "logs/sample_dist_heatmap.err"   
+        out = "logs/plotDist.out",
+        err = "logs/plotDist.err"   
     message:
-        "Heatmap of sample distances"
+        "Plot Sample Distance"
     conda:
-        "../envs/plots.yaml"
+        "../envs/environment.yaml"
     script:
-        "../scripts/sample_dist_heatmap.R"
-    
-rule BVC_plot:
-    input:
-        rds="results/estimateDisp.rds"
-    output:
-        plot="plots/BCV-plot.png"
-    log:
-        out = "logs/BVC_plot.out",
-        err = "logs/BVC_plot.err"    
-    message:
-        "Visualise Biological Coefficient of Variation against read abundance"
-    conda:
-        "../envs/plots.yaml"
-    script:
-        "../scripts/BVC_plot.R" 
+        "../scripts/plotDist.R"
