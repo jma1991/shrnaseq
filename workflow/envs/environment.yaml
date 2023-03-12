@@ -3,6 +3,8 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - bioconductor-annotationdbi
+  - bioconductor-csaw
   - bioconductor-edger
   - bioconductor-limma
   - r-ggplot2

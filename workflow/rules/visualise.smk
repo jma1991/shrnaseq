@@ -1,25 +1,27 @@
+# Authors: James Ashmore, Claire Prince
+# Copyright: Copyright 2023, Zifo Technologies Ltd.
+# Email: james.ashmore@zifornd.com
+# License: MIT
 
-rule expression_heatmap: 
+rule plotHeatmap: 
     input:
-        rds=["results/{contrast}-glmLRT.rds", 
-        "results/filter_guideRNAs.rds", 
-        "results/corrected_counts.rds"]
+        rds = "results/calcNormFactors.rds",
+        tsv = "results/{contrast}.topTags.tsv"
     output:
-        plot=["plots/{contrast}-expression-heatmap.png",
-        "plots/{contrast}-corrected-expression-heatmap.png"]
+        png = "plots/{contrast}.plotHeatmap.png"
     params:
-        FC=config["FC"]
+        ntop = 50
     log:
-        out = "logs/{contrast}-expression-heatmap.out",
-        err = "logs/{contrast}-expression-heatmap.err" 
+        out = "logs/{contrast}.plotHeatmap.out",
+        err = "logs/{contrast}.plotHeatmap.err" 
     message:
-        "Visualise differential expression across groups"
+        "Plot expression of top-ranked genes for contrast: {wildcards.contrast}"
     conda:
         "../envs/plots.yaml"
     script:
-        "../scripts/expression_heatmap.R"
+        "../scripts/plotHeatmap.R"
 
-rule volcano_plot:
+rule plotVolcano:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:
@@ -36,7 +38,7 @@ rule volcano_plot:
     script:
         "../scripts/volcano_plot.R"
    
-rule guideRNA_histogram:
+rule plotPValue:
     input:
         rds="results/{contrast}-glmLRT.rds"
     output:

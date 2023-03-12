@@ -18,7 +18,7 @@ rule processAmplicons:
     message:
         "Process Amplicons Data"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/processAmplicons.R"
 
@@ -33,7 +33,7 @@ rule filterAmplicons:
     message:
         "Filter Amplicons By Expression Level"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/filterAmplicons.R"
 
@@ -48,7 +48,7 @@ rule calcNormFactors:
     message:
         "Library Size Normalization"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/calcNormFactors.R"
 

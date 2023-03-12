@@ -14,7 +14,7 @@ rule modelMatrix:
     message:
         "Construct Design Matrix"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/modelMatrix.R"
 
@@ -44,7 +44,7 @@ rule estimateDisp:
     message: 
         "Estimate Dispersions"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/estimateDisp.R" 
 
@@ -59,7 +59,7 @@ rule glmFit:
     message:
         "Fit NB-GLM"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/glmFit.R" 
 
@@ -76,7 +76,7 @@ rule glmLRT:
     message:
         "Perform likelihood ratio test on GLM"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/glmLRT.R" 
 
@@ -91,6 +91,6 @@ rule topTags:
     message:
         "Table of the Top Differentially Expressed Tags"
     conda:
-        "../envs/bioconductor-edger.yaml"
+        "../envs/environment.yaml"
     script:
         "../scripts/topTags.R"

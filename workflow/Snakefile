@@ -17,9 +17,9 @@ include: "rules/qc.smk"
 include: "rules/diffexp.smk"
 # include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
-# include: "rules/ge.smk"
+include: "rules/ge.smk"
 
 # Target rule
 rule all:
     input:
-      get_final_output()
+      get_final_output(config)

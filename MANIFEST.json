@@ -1,5 +1,0 @@
-{
-    "mainWorkflowURL": ".",
-    "engineOptions": "--snakefile workflow/Snakefile --directory .tests/integration/ --use-conda --cores all"
-  }
-  
