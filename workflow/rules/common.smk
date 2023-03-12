@@ -25,8 +25,9 @@ def get_final_output(config):
         output.append(f"results/{contrast}.topTags.tsv")
         output.append(f"results/{contrast}.combineTests.tsv")
         output.append(f"results/{contrast}.camera.tsv")
-        output.append(f"results/{contrast}.goana.tsv")
-        output.append(f"results/{contrast}.kegga.tsv")
+        output.append(f"results/{contrast}.goana")
+        output.append(f"results/{contrast}.kegga")
+        output.append(f"results/{contrast}.plotRank.png")
 
     return output
 

@@ -20,7 +20,7 @@ main <- function(input, output, params, log) {
     library(limma)
 
     library(
-        params$organism,
+        package = params$organism,
         character.only = TRUE,
         lib.loc = "resources/bioconductor/organism/lib/R/library"
     )
@@ -31,25 +31,91 @@ main <- function(input, output, params, log) {
 
     org <- getFromNamespace(params$organism, params$organism)
 
-    ids <- mapIds(
-        x = org,
-        keys = rownames(sig),
-        column = "ENTREZID",
-        keytype = "SYMBOL"
-    )
+    dir.create(path = output$dir)
 
-    out <- kegga(
-        de = ids,
-        species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2]
-    )
+    # Up
 
-    write.table(
-        x = out,
-        file = output$tsv,
-        quote = FALSE,
-        sep = "\t",
-        col.names = NA
-    )
+    sig.up <- subset(sig, direction == "up")
+
+    if (nrow(sig.up) > 0) {
+
+        ids.up <- mapIds(
+            x = org,
+            keys = rownames(sig.up),
+            column = "ENTREZID",
+            keytype = "SYMBOL"
+        )
+
+        out.up <- kegga(
+            de = ids.up,
+            species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2]
+        )
+
+        write.table(
+            x = out.up,
+            file = file.path(output$dir, "up.tsv"),
+            quote = FALSE,
+            sep = "\t",
+            col.names = NA
+        )
+
+    }
+
+    # Down
+
+    sig.down <- subset(sig, direction == "down")
+
+    if (nrow(sig.down) > 0) {
+
+        ids.down <- mapIds(
+            x = org,
+            keys = rownames(sig.down),
+            column = "ENTREZID",
+            keytype = "SYMBOL"
+        )
+
+        out.down <- kegga(
+            de = ids.down,
+            species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2]
+        )
+
+        write.table(
+            x = out.down,
+            file = file.path(output$dir, "down.tsv"),
+            quote = FALSE,
+            sep = "\t",
+            col.names = NA
+        )
+
+    }
+
+    # Mixed
+
+    sig.mixed <- subset(sig, direction == "mixed")
+
+    if (nrow(sig.mixed) > 0) {
+
+        ids.mixed <- mapIds(
+            x = org,
+            keys = rownames(sig.mixed),
+            column = "ENTREZID",
+            keytype = "SYMBOL"
+        )
+
+        out.mixed <- kegga(
+            de = ids.mixed,
+            species = strsplit(params$organism, ".", fixed = TRUE)[[1]][2]
+        )
+
+        write.table(
+            x = out.mixed,
+            file = file.path(output$dir, "mixed.tsv"),
+            quote = FALSE,
+            sep = "\t",
+            col.names = NA
+        )
+
+    }
 
 }
 

@@ -15,7 +15,7 @@ include: "rules/resources.smk"
 include: "rules/processing.smk"
 include: "rules/qc.smk"
 include: "rules/diffexp.smk"
-# include: "rules/visualise.smk"
+include: "rules/visualise.smk"
 include: "rules/genelevel.smk"
 include: "rules/ge.smk"
 

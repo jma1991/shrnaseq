@@ -6,7 +6,9 @@ dependencies:
   - bioconductor-annotationdbi
   - bioconductor-csaw
   - bioconductor-edger
+  - bioconductor-go.db
   - bioconductor-limma
   - r-ggplot2
+  - r-ggrepel
   - r-matrixstats
   - r-pheatmap

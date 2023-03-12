@@ -5,12 +5,12 @@
 
 rule goana:
     input:
-        rds = "results/{contrast}.combineTests.tsv",
+        tsv = "results/{contrast}.combineTests.tsv",
         pkg = expand("resources/bioconductor/organism/lib/R/library/{package}", package = config["organism"])
     output:
-        tsv = "results/{contrast}.goana.tsv"
+        dir = directory("results/{contrast}.goana")
     params:
-        FDR = 1,
+        FDR = 1.1,
         organism = config["organism"]
     log:
         out = "logs/{contrast}.goana.out",
@@ -41,12 +41,12 @@ rule goana:
 
 rule kegga:
     input:
-        rds = "results/{contrast}.combineTests.tsv",
+        tsv = "results/{contrast}.combineTests.tsv",
         pkg = expand("resources/bioconductor/organism/lib/R/library/{package}", package = config["organism"])
     output:
-        tsv = "results/{contrast}.kegga.tsv"
+        dir = directory("results/{contrast}.kegga")
     params:
-        FDR = 1,
+        FDR = 1.1,
         organism = config["organism"]
     log:
         out = "logs/{contrast}.kegga.out",

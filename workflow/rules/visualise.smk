@@ -70,3 +70,16 @@ rule plotSMEAR:
         "../envs/plots.yaml"
     script:
         "../scripts/plotSMEAR.R"       
+
+rule plotRank:
+    input:
+        tsv = "results/{contrast}.combineTests.tsv"
+    output:
+        png = "results/{contrast}.plotRank.png"
+    log:
+        out = "logs/{contrast}.plotRank.out",
+        err = "logs/{contrast}.plotRank.err"
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/plotRank.R"
